@@ -295,7 +295,7 @@
 
 /* 打印样式 */
 @media print {
-  . {
+  .no-print {
     display: none !important;
   }
   
@@ -1330,97 +1330,134 @@ const DataStore = {
   }
 };
 
-// ==================== 云端数据同步 ====================
+// ==================== GitHub 云端数据同步 ====================
 
 const CloudSync = {
-  API_BASE: 'http://127.0.0.1:8765/api',
+  // GitHub 配置
+  GITHUB_OWNER: 'TANSHAOJING',
+  GITHUB_REPO: 'defect-dashboard',
+  GITHUB_FILE: 'data.json',
+  GITHUB_TOKEN: '',  // 需要用户输入
+  
   syncTimer: null,
   isOnline: false,
+  dataVersion: 0,
+  isConfigured: false,
 
-  // 检查服务器是否可用
-  async checkOnline() {
-    try {
-      const resp = await fetch(this.API_BASE + '/ping', { signal: AbortSignal.timeout(3000) });
-      this.isOnline = resp.ok;
-      return this.isOnline;
-    } catch {
-      this.isOnline = false;
-      return false;
+  // 初始化
+  init() {
+    // 从 localStorage 读取 token
+    const savedToken = localStorage.getItem('ds_github_token');
+    if (savedToken) {
+      this.GITHUB_TOKEN = savedToken;
+      this.isConfigured = true;
     }
   },
 
-  // 从服务器加载数据
+  // 设置 Token
+  setToken(token) {
+    this.GITHUB_TOKEN = token;
+    this.isConfigured = true;
+    localStorage.setItem('ds_github_token', token);
+  },
+
+  // 检查是否配置
+  checkOnline() {
+    this.isOnline = this.isConfigured && !!this.GITHUB_TOKEN;
+    return Promise.resolve(this.isOnline);
+  },
+
+  // GitHub API 请求
+  async githubAPI(path, options = {}) {
+    const url = `https://api.github.com/repos/${this.GITHUB_OWNER}/${this.GITHUB_REPO}/contents/${this.GITHUB_FILE}`;
+    const resp = await fetch(url, {
+      ...options,
+      headers: {
+        'Authorization': `token ${this.GITHUB_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json',
+        ...(options.headers || {})
+      }
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.message || 'API error');
+    }
+    return resp.json();
+  },
+
+  // 从 GitHub 加载数据
   async loadFromServer() {
     try {
-      const resp = await fetch(this.API_BASE + '/load');
-      if (!resp.ok) return null;
-      const result = await resp.json();
-      if (result.success && result.data) {
-        return result.data;
-      }
-      return null;
-    } catch {
+      const fileData = await this.githubAPI();
+      const content = atob(fileData.content.replace(/\n/g, ''));
+      const data = JSON.parse(content);
+      return data;
+    } catch (err) {
+      console.log('加载云端数据失败:', err.message);
       return null;
     }
   },
 
-  // 保存数据到服务器
+  // 保存数据到 GitHub
   async saveToServer(data) {
     try {
-      const resp = await fetch(this.API_BASE + '/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      // 先获取当前文件（为了得到 sha）
+      let sha = '';
+      try {
+        const existing = await this.githubAPI();
+        sha = existing.sha;
+      } catch (e) {
+        // 文件不存在，首次创建
+      }
+
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      const body = {
+        message: `数据同步 - ${new Date().toLocaleString('zh-CN')}`,
+        content: content,
+        ...(sha ? { sha } : {})
+      };
+
+      await this.githubAPI('', {
+        method: 'PUT',
+        body: JSON.stringify(body)
       });
-      return resp.ok;
-    } catch {
+      return true;
+    } catch (err) {
+      console.log('保存到云端失败:', err.message);
       return false;
     }
   },
 
   // 启动时加载
   async initLoad() {
-    const online = await this.checkOnline();
-    if (!online) return;
+    if (!this.isConfigured) return false;
 
     const serverData = await this.loadFromServer();
-    if (!serverData) return;
+    if (!serverData) return false;
 
-    // 比较时间戳，用最新的
-    const localData = {
-      products: DataStore.getProducts(),
-      production: DataStore.getProductionRecords(),
-      defects: DataStore.getDefectRecords()
-    };
-
-    // 服务器有数据就用服务器的（服务器是"权威"来源）
     if (serverData.products || serverData.production || serverData.defects) {
       if (serverData.products) DataStore.saveProducts(serverData.products);
       if (serverData.production) DataStore.saveProductionRecords(serverData.production);
       if (serverData.defects) DataStore.saveDefectRecords(serverData.defects);
-      console.log('✅ 已从服务器加载数据');
       return true;
-    } else if (localData.products.length > 0) {
-      // 本地有数据，服务器没有 → 上传到服务器
-      await this.saveToServer(localData);
-      console.log('📤 已将本地数据上传到服务器');
     }
     return false;
   },
 
-  // 保存时自动同步
+  // 自动同步
   async autoSave() {
-    if (!this.isOnline) return;
+    if (!this.isConfigured) return;
     const data = {
       products: DataStore.getProducts(),
       production: DataStore.getProductionRecords(),
       defects: DataStore.getDefectRecords(),
-      lastSync: new Date().toISOString()
+      lastSync: new Date().toISOString(),
+      version: (this.dataVersion++)
     };
     await this.saveToServer(data);
   },
 
-  // 启动自动同步（每30秒）
   startAutoSync() {
     this.stopAutoSync();
     this.syncTimer = setInterval(() => this.autoSave(), 30000);
@@ -1431,8 +1468,23 @@ const CloudSync = {
       clearInterval(this.syncTimer);
       this.syncTimer = null;
     }
+  },
+
+  // 手动立即同步
+  async syncNow() {
+    const data = {
+      products: DataStore.getProducts(),
+      production: DataStore.getProductionRecords(),
+      defects: DataStore.getDefectRecords(),
+      lastSync: new Date().toISOString()
+    };
+    const ok = await this.saveToServer(data);
+    return ok;
   }
 };
+
+// 初始化
+CloudSync.init();
 
 // ==================== 初始化 ====================
 
@@ -1636,12 +1688,11 @@ const App = {
     // 加载默认页面
     this.navigate('dashboard');
 
-    // 启动云端同步
+    // 启动 GitHub 云端同步
     CloudSync.checkOnline().then(online => {
       if (online) {
         CloudSync.initLoad().then(loaded => {
           CloudSync.startAutoSync();
-          // 如果从服务器加载了新数据，刷新页面
           if (loaded) {
             Dashboard.refresh();
             Register.loadProducts();

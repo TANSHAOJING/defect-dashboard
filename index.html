@@ -1351,7 +1351,7 @@ const CloudSync = {
     if (savedToken) {
       this.GITHUB_TOKEN = savedToken;
     }
-    this.isConfigured = true; this.GITHUB_TOKEN = localStorage.getItem("ds_github_token") || "";
+    this.isConfigured = true;  // 始终尝试连接
   },
 
   // 设置 Token
@@ -1687,6 +1687,19 @@ const App = {
 
     // 加载默认页面
     this.navigate('dashboard');
+
+    // 看板报表版：如果没有配置 Token，弹框询问
+    if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+      if (!localStorage.getItem('ds_github_token')) {
+        setTimeout(() => {
+          const token = prompt('🔐 请输入数据同步密钥（只需一次）：\n\n输入后系统将自动同步数据到云端。\n如不确定，请向管理员索要。');
+          if (token && token.trim()) {
+            CloudSync.setToken(token.trim());
+            location.reload();
+          }
+        }, 500);
+      }
+    }
 
     // 启动 GitHub 云端同步
     CloudSync.checkOnline().then(online => {

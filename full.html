@@ -1351,7 +1351,7 @@ const CloudSync = {
     if (savedToken) {
       this.GITHUB_TOKEN = savedToken;
     }
-    this.isConfigured = true; this.GITHUB_TOKEN = localStorage.getItem("ds_github_token") || "";
+    this.isConfigured = true;  // 始终尝试连接
   },
 
   // 设置 Token

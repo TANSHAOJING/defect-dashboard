@@ -1,0 +1,3032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不良品登记与报废率管理系统</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+/* 自定义样式 */
+
+/* 页面切换动画 */
+.page-section {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 导航栏激活状态 */
+.nav-item.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* 表格样式优化 */
+.data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.data-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* 卡片样式 */
+.stat-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* 表单样式 */
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 按钮动画 */
+.btn {
+  transition: all 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* 图表容器 */
+.chart-container {
+  position: relative;
+  height: 300px;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 200px;
+  }
+}
+
+/* 不良率颜色指示 */
+.rate-low { color: #10b981; }
+.rate-medium { color: #f59e0b; }
+.rate-high { color: #ef4444; }
+
+/* 打印样式 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .page-section {
+    display: block !important;
+  }
+}
+
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-sm border-b border-gray-200 no-print">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-2">
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+          <span class="text-xl font-bold text-gray-800">不良品管理系统</span>
+        </div>
+        <div class="flex space-x-1">
+          <button onclick="App.navigate('dashboard')" class="nav-item active px-4 py-2 rounded-lg text-sm font-medium transition-colors" data-page="dashboard">
+            📊 数据看板
+          </button>
+          <button onclick="App.navigate('register')" class="nav-item px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-page="register">
+            📝 不良登记
+          </button>
+          <button onclick="App.navigate('production')" class="nav-item px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-page="production">
+            📦 产量录入
+          </button>
+          <button onclick="App.navigate('report')" class="nav-item px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-page="report">
+            📈 统计报表
+          </button>
+          <button onclick="App.navigate('products')" class="nav-item px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-page="products">
+            ⚙️ 产品管理
+          </button>
+          <button onclick="App.navigate('data')" class="nav-item px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" data-page="data">
+            💾 数据管理
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    
+    <!-- 数据看板 -->
+    <section id="page-dashboard" class="page-section">
+      <div class="mb-6 flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">📊 数据看板</h2>
+          <p class="text-gray-500 mt-1">实时掌握生产质量状况</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <label class="text-sm text-gray-600 font-medium">查看日期：</label>
+          <input type="date" id="dash-date-picker" class="form-input px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" onchange="Dashboard.onDateChange()">
+          <button onclick="Dashboard.goToday()" class="btn px-3 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm">
+            今天
+          </button>
+        </div>
+      </div>
+      
+      <!-- 今日概览卡片 -->
+      <div class="mb-4">
+        <h3 class="text-md font-semibold text-gray-700 mb-3 flex items-center">
+          <span class="w-2 h-5 bg-blue-500 rounded mr-2"></span><span id="dash-day-label">今日</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">今日总产量</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1" id="dash-day-production">0</p>
+              </div>
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">今日总报废</p>
+                <p class="text-3xl font-bold text-red-600 mt-1" id="dash-day-defects">0</p>
+              </div>
+              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">今日不良率</p>
+                <p class="text-3xl font-bold text-orange-600 mt-1" id="dash-day-rate">0.00%</p>
+              </div>
+              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">今日有数据产品</p>
+                <p class="text-3xl font-bold text-green-600 mt-1" id="dash-day-product-count">0</p>
+              </div>
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本周概览卡片 -->
+      <div class="mb-4">
+        <h3 class="text-md font-semibold text-gray-700 mb-3 flex items-center">
+          <span class="w-2 h-5 bg-purple-500 rounded mr-2"></span>本周（周一~周日）
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本周总产量</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1" id="dash-week-production">0</p>
+              </div>
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本周总报废</p>
+                <p class="text-3xl font-bold text-red-600 mt-1" id="dash-week-defects">0</p>
+              </div>
+              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本周不良率</p>
+                <p class="text-3xl font-bold text-orange-600 mt-1" id="dash-week-rate">0.00%</p>
+              </div>
+              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本周有数据产品</p>
+                <p class="text-3xl font-bold text-green-600 mt-1" id="dash-week-product-count">0</p>
+              </div>
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本月概览卡片 -->
+      <div class="mb-6">
+        <h3 class="text-md font-semibold text-gray-700 mb-3 flex items-center">
+          <span class="w-2 h-5 bg-indigo-500 rounded mr-2"></span>本月
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本月总产量</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1" id="dash-month-production">0</p>
+              </div>
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本月总报废</p>
+                <p class="text-3xl font-bold text-red-600 mt-1" id="dash-month-defects">0</p>
+              </div>
+              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本月不良率</p>
+                <p class="text-3xl font-bold text-orange-600 mt-1" id="dash-month-rate">0.00%</p>
+              </div>
+              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-gray-500">本月有数据产品</p>
+                <p class="text-3xl font-bold text-green-600 mt-1" id="dash-month-product-count">0</p>
+              </div>
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 图表区域 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">近7天不良率趋势</h3>
+          <div class="chart-container">
+            <canvas id="chart-trend"></canvas>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">本周不良类型占比</h3>
+          <div class="chart-container">
+            <canvas id="chart-type"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">各产品当日报废数</h3>
+          <div class="chart-container">
+            <canvas id="chart-product"></canvas>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">本周产品不良率排名</h3>
+          <div class="chart-container">
+            <canvas id="chart-ranking"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 当日报废明细 -->
+      <div class="mt-6 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">📋 当日报废明细</h3>
+          <span class="text-sm text-gray-500" id="dash-defect-detail-date">--</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>产品</th>
+                <th>不良类别</th>
+                <th>不良描述</th>
+                <th>数量</th>
+              </tr>
+            </thead>
+            <tbody id="dash-defect-detail">
+              <tr><td colspan="4" class="text-center text-gray-500 py-8">暂无数据</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 不良描述 TOP10 -->
+      <div class="mt-6 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">🔥 本周不良描述 TOP10</h3>
+        <div class="overflow-x-auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>不良描述</th>
+                <th>所属类别</th>
+                <th>数量</th>
+                <th>占比</th>
+              </tr>
+            </thead>
+            <tbody id="dash-defect-top10">
+              <tr><td colspan="5" class="text-center text-gray-500 py-8">暂无数据</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 不良品登记 -->
+    <section id="page-register" class="page-section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">📝 不良品登记</h2>
+        <p class="text-gray-500 mt-1">记录每天的不良品信息</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 登记表单 -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">新增登记</h3>
+            <form id="defect-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">日期</label>
+                <input type="date" id="defect-date" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">产品</label>
+                <select id="defect-product" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <option value="">请选择产品</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">不良类别</label>
+                <select id="defect-type" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled>
+                  <option value="">请先选择产品</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">不良描述</label>
+                <select id="defect-desc" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled>
+                  <option value="">请先选择类别</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                <input type="number" id="defect-quantity" min="1" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="输入不良数量">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">备注（可选）</label>
+                <input type="text" id="defect-note" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="输入备注">
+              </div>
+              <button type="submit" class="btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
+                保存登记
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 今日登记记录 -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">今日登记记录</h3>
+              <div class="flex items-center space-x-2">
+                <input type="date" id="register-filter-date" class="form-input px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                <button onclick="Register.loadRecords()" class="btn px-3 py-1 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm">
+                  刷新
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>产品</th>
+                    <th>不良类别</th>
+                    <th>不良描述</th>
+                    <th>数量</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="register-records">
+                  <tr>
+                    <td colspan="7" class="text-center text-gray-500 py-8">暂无记录</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 产量录入 -->
+    <section id="page-production" class="page-section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">📦 产量录入</h2>
+        <p class="text-gray-500 mt-1">记录每天各产品的生产数量</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 录入表单 -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">新增产量</h3>
+            <form id="production-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">日期</label>
+                <input type="date" id="production-date" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">产品</label>
+                <select id="production-product" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <option value="">请选择产品</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">日产量</label>
+                <input type="number" id="production-quantity" min="0" class="form-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="输入生产数量">
+              </div>
+              <button type="submit" class="btn w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-medium">
+                保存产量
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 产量记录 -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">产量记录</h3>
+              <div class="flex items-center space-x-2">
+                <input type="date" id="production-filter-date" class="form-input px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                <button onclick="Production.loadRecords()" class="btn px-3 py-1 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-sm">
+                  刷新
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>产品</th>
+                    <th>日产量</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="production-records">
+                  <tr>
+                    <td colspan="4" class="text-center text-gray-500 py-8">暂无记录</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 统计报表 -->
+    <section id="page-report" class="page-section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">📈 统计报表</h2>
+        <p class="text-gray-500 mt-1">查看详细的报废率统计</p>
+      </div>
+
+      <!-- 筛选条件 -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+        <div class="flex flex-wrap items-end gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">报表类型</label>
+            <select id="report-type" class="form-input px-4 py-2 border border-gray-300 rounded-lg">
+              <option value="daily">日报表</option>
+              <option value="weekly">周报表</option>
+              <option value="monthly">月报表</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
+            <input type="date" id="report-start" class="form-input px-4 py-2 border border-gray-300 rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">结束日期</label>
+            <input type="date" id="report-end" class="form-input px-4 py-2 border border-gray-300 rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">产品筛选</label>
+            <select id="report-product" class="form-input px-4 py-2 border border-gray-300 rounded-lg">
+              <option value="">全部产品</option>
+            </select>
+          </div>
+          <button onclick="Report.generate()" class="btn px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+            生成报表
+          </button>
+          <button onclick="Report.exportExcel()" class="btn px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">
+            导出Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- 报表结果 -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">报表结果</h3>
+        <div class="overflow-x-auto">
+          <table class="data-table" id="report-table">
+            <thead>
+              <tr>
+                <th>日期/周期</th>
+                <th>产品</th>
+                <th>产量</th>
+                <th>报废数</th>
+                <th>不良率</th>
+                <th>等级</th>
+              </tr>
+            </thead>
+            <tbody id="report-body">
+              <tr>
+                <td colspan="6" class="text-center text-gray-500 py-8">请选择条件生成报表</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 产品管理 -->
+    <section id="page-products" class="page-section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">⚙️ 产品管理</h2>
+        <p class="text-gray-500 mt-1">管理产品和不良类型配置</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 产品列表 -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">产品列表</h3>
+              <button onclick="Products.showAddForm()" class="btn px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                + 新增产品
+              </button>
+            </div>
+            <div id="product-list" class="space-y-2">
+              <!-- 动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 产品详情/编辑 -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4" id="product-detail-title">选择产品查看详情</h3>
+            <div id="product-detail">
+              <p class="text-gray-500 text-center py-8">请从左侧选择一个产品</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 数据管理 -->
+    <section id="page-data" class="page-section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">💾 数据管理</h2>
+        <p class="text-gray-500 mt-1">备份、恢复数据，支持 CSV（Excel）和 JSON 格式</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Excel 直接导入 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-green-500">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">从 Excel 导入产品配置</h3>
+              <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">推荐</span>
+            </div>
+          </div>
+          <p class="text-gray-500 text-sm mb-4">直接上传你现有的 Excel 表格（.xlsx），自动识别产品、不良类别和描述</p>
+          <input type="file" id="import-excel-file" accept=".xlsx,.xls" class="hidden" onchange="DataManager.importExcel(this)">
+          <button onclick="document.getElementById('import-excel-file').click()" class="btn w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 font-medium text-lg">
+            📂 上传 Excel 文件
+          </button>
+          <p class="text-xs text-gray-400 mt-2">支持 .xlsx 格式，按「产品名称、不良类别、不良描述」三列解析</p>
+          <details class="mt-3">
+            <summary class="text-sm text-blue-600 cursor-pointer hover:underline">⚠️ 上传不成功？点这里用粘贴方式</summary>
+            <div class="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+              <p class="text-sm text-gray-600 mb-2">在 Excel 中全选数据 Ctrl+C，粘贴到下方：</p>
+              <textarea id="paste-excel-data" rows="6" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="在此粘贴 Excel 数据（Ctrl+V）..."></textarea>
+              <button onclick="DataManager.importFromPaste()" class="btn mt-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium">
+                从粘贴内容导入
+              </button>
+            </div>
+          </details>
+        </div>
+
+        <!-- CSV 导出（Excel 可打开） -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">导出 CSV（Excel 可打开）</h3>
+          </div>
+          <p class="text-gray-500 text-sm mb-4">将产量和不良记录导出为 CSV 文件，可用 Excel/WPS 直接打开编辑</p>
+          <div class="space-y-2">
+            <button onclick="DataManager.exportCSV('production')" class="btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
+              📦 导出产量记录 CSV
+            </button>
+            <button onclick="DataManager.exportCSV('defects')" class="btn w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 font-medium">
+              📝 导出不良记录 CSV
+            </button>
+            <button onclick="DataManager.exportCSV('all')" class="btn w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 font-medium">
+              📊 导出全部数据 CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- CSV 导入 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">从 CSV/Excel 导入</h3>
+          </div>
+          <p class="text-gray-500 text-sm mb-4">从 CSV 文件导入产量或不良记录（支持 Excel 另存为 CSV 格式）</p>
+          <div class="space-y-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">导入类型</label>
+              <select id="import-csv-type" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="production">产量记录</option>
+                <option value="defects">不良记录</option>
+              </select>
+            </div>
+            <input type="file" id="import-csv-file" accept=".csv,.txt" class="hidden" onchange="DataManager.importCSV(this)">
+            <button onclick="document.getElementById('import-csv-file').click()" class="btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
+              选择 CSV 文件导入
+            </button>
+          </div>
+          <div class="mt-4 p-3 bg-gray-50 rounded-lg text-xs text-gray-500">
+            <p class="font-medium mb-1">CSV 文件格式要求：</p>
+            <p>产量记录：日期, 产品名称, 产量</p>
+            <p>不良记录：日期, 产品名称, 不良类别, 不良描述, 数量, 备注</p>
+            <p class="mt-1">提示：在 Excel 中编辑好数据后，另存为 CSV 格式即可导入</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <!-- JSON 完整备份 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">完整备份（JSON）</h3>
+          <p class="text-gray-500 text-sm mb-4">导出所有数据（含产品配置），用于完整备份和跨电脑迁移</p>
+          <button onclick="DataManager.exportJSON()" class="btn w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 font-medium">
+            导出完整备份
+          </button>
+        </div>
+
+        <!-- JSON 恢复 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">恢复备份（JSON）</h3>
+          <p class="text-gray-500 text-sm mb-4">从之前导出的完整备份文件恢复所有数据</p>
+          <input type="file" id="import-json-file" accept=".json" class="hidden" onchange="DataManager.importJSON(this)">
+          <button onclick="document.getElementById('import-json-file').click()" class="btn w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium">
+            选择备份文件恢复
+          </button>
+        </div>
+
+        <!-- 重置 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">重置数据</h3>
+          <p class="text-gray-500 text-sm mb-4">清空所有数据并恢复默认产品配置</p>
+          <button onclick="DataManager.resetData()" class="btn w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 font-medium">
+            重置数据
+          </button>
+        </div>
+      </div>
+
+      <!-- 数据统计 -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">数据统计</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-sm text-gray-500">产品数量</p>
+            <p class="text-2xl font-bold text-gray-800" id="data-product-count">0</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-sm text-gray-500">产量记录</p>
+            <p class="text-2xl font-bold text-gray-800" id="data-production-count">0</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-sm text-gray-500">不良记录</p>
+            <p class="text-2xl font-bold text-gray-800" id="data-defect-count">0</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-sm text-gray-500">数据存储位置</p>
+            <p class="text-lg font-bold text-gray-800">浏览器本地</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 脚本引用 -->
+  <script>
+/**
+ * ¹¤¾ßº¯Êý
+ */
+
+const Utils = {
+  // ¸ñÊ½»¯ÈÕÆÚÎª YYYY-MM-DD
+  formatDate(date) {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  },
+
+  // »ñÈ¡½ñÌìµÄÈÕÆÚ×Ö·û´®
+  getToday() {
+    return this.formatDate(new Date());
+  },
+
+  // »ñÈ¡±¾ÖÜÒ»ÈÕÆÚ
+  getWeekStart(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return this.formatDate(new Date(d.setDate(diff)));
+  },
+
+  // »ñÈ¡±¾ÖÜÈÕÈÕÆÚ
+  getWeekEnd(date) {
+    const start = new Date(this.getWeekStart(date));
+    start.setDate(start.getDate() + 6);
+    return this.formatDate(start);
+  },
+
+  // »ñÈ¡ÈÕÆÚ·¶Î§ÄÚµÄËùÓÐÈÕÆÚ
+  getDateRange(startDate, endDate) {
+    const dates = [];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      dates.push(this.formatDate(d));
+    }
+    return dates;
+  },
+
+  // »ñÈ¡±¾ÖÜµÄËùÓÐÈÕÆÚ
+  getWeekDates(date) {
+    const start = this.getWeekStart(date);
+    const end = this.getWeekEnd(date);
+    return this.getDateRange(start, end);
+  },
+
+  // »ñÈ¡½üNÌìµÄÈÕÆÚ
+  getRecentDays(n) {
+    const dates = [];
+    const today = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      dates.push(this.formatDate(d));
+    }
+    return dates;
+  },
+
+  // ¸ñÊ½»¯Êý×Ö£¨±£Áô2Î»Ð¡Êý£©
+  formatNumber(num) {
+    if (num === 0 || num === null || num === undefined) return '0.00';
+    return num.toFixed(2);
+  },
+
+  // ¸ñÊ½»¯°Ù·Ö±È
+  formatPercent(num) {
+    if (num === 0 || num === null || num === undefined) return '0.00%';
+    return num.toFixed(2) + '%';
+  },
+
+  // ¼ÆËã²»Á¼ÂÊ
+  calcDefectRate(defects, production) {
+    if (!production || production === 0) return 0;
+    return (defects / production) * 100;
+  },
+
+  // Éú³ÉÎ¨Ò»ID
+  generateId(prefix = 'id') {
+    return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  },
+
+  // Éî¿½±´
+  deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  },
+
+  // °´ÈÕÆÚÅÅÐò£¨½µÐò£©
+  sortByDateDesc(records) {
+    return [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
+  },
+
+  // °´ÈÕÆÚÅÅÐò£¨ÉýÐò£©
+  sortByDateAsc(records) {
+    return [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
+  },
+
+  // ==================== CSV µ¼³ö ====================
+
+  // µ¼³öÎª CSV ÎÄ¼þ£¨Excel ¿ÉÖ±½Ó´ò¿ª£©
+  exportToCSV(data, filename) {
+    const csvContent = this.convertToCSV(data);
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  },
+
+  // ×ª»»Îª CSV ¸ñÊ½
+  convertToCSV(data) {
+    if (!data || data.length === 0) return '';
+    const headers = Object.keys(data[0]);
+    const rows = data.map(row => 
+      headers.map(header => {
+        const value = row[header];
+        if (typeof value === 'string' && (value.includes(',') || value.includes('\n'))) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      }).join(',')
+    );
+    return [headers.join(','), ...rows].join('\n');
+  },
+
+  // ==================== CSV µ¼Èë£¨´Ó Excel/CSV ÎÄ¼þ¶ÁÈ¡£© ====================
+
+  // ½âÎö CSV ÎÄ±¾ÎªÊý×é
+  parseCSV(text) {
+    const rows = [];
+    let currentRow = [];
+    let currentField = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < text.length && text[i + 1] === '"') {
+            currentField += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          currentField += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          currentRow.push(currentField.trim());
+          currentField = '';
+        } else if (ch === '\n' || (ch === '\r' && text[i + 1] === '\n')) {
+          currentRow.push(currentField.trim());
+          if (currentRow.some(f => f !== '')) {
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentField = '';
+          if (ch === '\r') i++;
+        } else if (ch === '\r') {
+          currentRow.push(currentField.trim());
+          if (currentRow.some(f => f !== '')) {
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentField = '';
+        } else {
+          currentField += ch;
+        }
+      }
+    }
+    // ´¦Àí×îºóÒ»ÐÐ
+    currentRow.push(currentField.trim());
+    if (currentRow.some(f => f !== '')) {
+      rows.push(currentRow);
+    }
+
+    // Ìø¹ý¿ÕÐÐ£¬´¦Àí BOM
+    if (rows.length > 0) {
+      rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
+    }
+
+    return rows;
+  },
+
+  // ¶ÁÈ¡ÉÏ´«ÎÄ¼þÎªÎÄ±¾
+  readFileAsText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = () => reject(new Error('¶ÁÈ¡ÎÄ¼þÊ§°Ü'));
+      reader.readAsText(file);
+    });
+  },
+
+  // ÏÂÔØ JSON ÎÄ¼þ
+  downloadJSON(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  },
+
+  // ¶ÁÈ¡ÉÏ´«µÄ JSON ÎÄ¼þ
+  readJSONFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          resolve(JSON.parse(e.target.result));
+        } catch (err) {
+          reject(new Error('ÎÄ¼þ¸ñÊ½´íÎó£¬ÇëÉÏ´«ÓÐÐ§µÄ JSON ÎÄ¼þ'));
+        }
+      };
+      reader.onerror = () => reject(new Error('¶ÁÈ¡ÎÄ¼þÊ§°Ü'));
+      reader.readAsText(file);
+    });
+  },
+
+  // È·ÈÏ¶Ô»°¿ò
+  confirm(message) {
+    return window.confirm(message);
+  },
+
+  // ÏÔÊ¾ÌáÊ¾ÏûÏ¢
+  showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+    toast.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+};
+
+</script>
+  <script>
+/**
+ * 数据层 - 负责所有数据的存储、读取和管理
+ * 使用 localStorage 持久化
+ */
+
+const STORAGE_KEYS = {
+  PRODUCTS: 'ds_products',
+  PRODUCTION: 'ds_production',
+  DEFECTS: 'ds_defects',
+  SETTINGS: 'ds_settings'
+};
+
+// ==================== 预设产品数据 ====================
+const DEFAULT_PRODUCTS = [
+  {
+    id: 'p_em34',
+    name: 'EM34静盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['型线超差', '密封槽尺寸超差', '尺寸超差', '板厚超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['调机件', '一夹装偏', '二夹装偏', '三夹装偏', '撞机', '断刀']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['孔内有台阶', '有台阶', '来料不良', '变形', '漏坏', '碰伤', '压伤', '倒角小', '氧化', '有毛刺']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['气密报警', '机器故障、异常']
+      }
+    ]
+  },
+  {
+    id: 'p_esea',
+    name: 'ESEA静盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['轴承孔超差', '位置度超差', '型线面键槽超差', '板厚超差', '型线面5毫米孔超差', '同心度超差', '圆柱度超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['一夹装偏', '二夹装偏', '三夹装偏', '调机件', '打码不良', '断刀']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['氧化', '型线面漏坏', '背面漏坏', '型线有刀纹', '碰伤', '来料不良', '有台阶', '基准孔倒角偏', '打滑']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['尺寸跳动', '主轴进渣']
+      }
+    ]
+  },
+  {
+    id: 'p_ha',
+    name: 'HA动盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['6毫米孔位置度超差', '尺寸超差', '轴承孔超差', '外圆超差', '型线超差', '密封槽尺寸超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['调机件', '断刀', '一夹装偏', '二夹装偏', '三夹装偏', '环孔位置度超差', '打码不良', '混料', '二次装夹']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['外观不良', '型线过切', '型线有台阶', '型线没倒角', '背面有台阶', '环孔有台阶', '对错刀', '环孔底部粗糙', '环孔漏坏', '夹伤', '机械手划伤', '碰伤', '漏坏', '来料不良', '氧化']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['机器故障', '主轴进渣', '机械手夹歪', '刀具变动', '打滑']
+      }
+    ]
+  },
+  {
+    id: 'p_st',
+    name: 'ST动盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['6毫米孔位置度超差', '有台阶', '尺寸超差', '轴承孔超差', '外圆超差', '型线超差', '密封槽尺寸超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['调机件', '断刀', '一夹装偏', '二夹装偏', '三夹装偏', '打码不良', '混料']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['外观不良', '有台阶', '环孔有台阶', '刀具碰伤', '对错刀', '型线没倒角', '机械手划伤', '环孔底部粗糙', '环孔漏坏', '型线漏坏', '夹伤', '碰伤', '漏坏', '来料不良']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['主轴进渣']
+      }
+    ]
+  },
+  {
+    id: 'p_t45j',
+    name: 'T45静盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['密封槽尺寸超差', '6.3孔偏', '尺寸不良', '板厚不良', '位置度超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['断刀', '撞机', '一/二夹装偏', '三夹装偏', '刀撞错了', '调机件']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['来料不良', '有台阶', '漏坏', '碰伤']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['主轴进渣', '电源跳闸', '夹具偏移']
+      }
+    ]
+  },
+  {
+    id: 'p_hthd',
+    name: 'HTHB静盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['6.3孔偏', '板厚不良', '位置度超差', '孔大', '密封槽尺寸超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['刀损', '撞机', '调机件', '换刀后未对刀', '返修报废', '断刀', '一、二夹装偏', '三夹装偏']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['来料不良', '型线没倒角', '有台阶', '漏坯', '碰伤']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['夹具不良', '主轴进渣', '掉刀', '机器故障']
+      }
+    ]
+  },
+  {
+    id: 'p_wx',
+    name: 'WX静盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['6.3孔偏', '板厚不良', '位置度超差', '孔大', '密封槽尺寸超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['刀损', '撞机', '调机件', '返修报废', '断刀', '一、二夹装偏', '三夹装偏']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['来料不良', '型线没倒角', '有台阶', '漏坯', '碰伤']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['夹具不良', '主轴进渣', '机器故障']
+      }
+    ]
+  },
+  {
+    id: 'p_pzk',
+    name: '配重块',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['板厚超差', '尺寸超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['装夹不良', '调机件']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['来料不良', '有台阶', '氧化', '夹伤', '碰伤', '漏坏']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['工装偏了']
+      }
+    ]
+  },
+  {
+    id: 'p_t45d',
+    name: 'T45动盘',
+    defectTypes: [
+      {
+        type: '尺寸超差',
+        descriptions: ['轴承孔大', '键槽超差', '环孔超差', '尺寸超差', '型线密封槽超差']
+      },
+      {
+        type: '人为操作',
+        descriptions: ['调机件', '型线超差', '断刀', '一夹装偏', '二夹装偏', '三夹装偏']
+      },
+      {
+        type: '外观不良',
+        descriptions: ['来料不良', '漏坏', '碰伤']
+      },
+      {
+        type: '设备原因',
+        descriptions: ['机器故障']
+      }
+    ]
+  }
+];
+
+// ==================== 数据操作 API ====================
+
+const DataStore = {
+  // 初始化：如果本地没有数据，导入预设数据
+  init() {
+    if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(DEFAULT_PRODUCTS));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.PRODUCTION)) {
+      localStorage.setItem(STORAGE_KEYS.PRODUCTION, JSON.stringify([]));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.DEFECTS)) {
+      localStorage.setItem(STORAGE_KEYS.DEFECTS, JSON.stringify([]));
+    }
+  },
+
+  // 重置为默认数据
+  resetToDefault() {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(DEFAULT_PRODUCTS));
+    localStorage.setItem(STORAGE_KEYS.PRODUCTION, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.DEFECTS, JSON.stringify([]));
+  },
+
+  // 产品管理
+  getProducts() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || '[]');
+  },
+
+  saveProducts(products) {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  },
+
+  addProduct(product) {
+    const products = this.getProducts();
+    product.id = 'p_' + Date.now();
+    products.push(product);
+    this.saveProducts(products);
+    return product;
+  },
+
+  updateProduct(product) {
+    const products = this.getProducts();
+    const index = products.findIndex(p => p.id === product.id);
+    if (index !== -1) {
+      products[index] = product;
+      this.saveProducts(products);
+    }
+  },
+
+  deleteProduct(productId) {
+    const products = this.getProducts();
+    const filtered = products.filter(p => p.id !== productId);
+    this.saveProducts(filtered);
+    // 同时删除相关的产量和不良记录
+    const production = this.getProductionRecords().filter(r => r.productId !== productId);
+    const defects = this.getDefectRecords().filter(r => r.productId !== productId);
+    this.saveProductionRecords(production);
+    this.saveDefectRecords(defects);
+  },
+
+  getProductById(productId) {
+    return this.getProducts().find(p => p.id === productId);
+  },
+
+  // 产量记录
+  getProductionRecords() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTION) || '[]');
+  },
+
+  saveProductionRecords(records) {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTION, JSON.stringify(records));
+  },
+
+  addProductionRecord(record) {
+    const records = this.getProductionRecords();
+    // 检查是否已有同日期同产品的记录
+    const existingIndex = records.findIndex(
+      r => r.date === record.date && r.productId === record.productId
+    );
+    if (existingIndex !== -1) {
+      records[existingIndex] = record;
+    } else {
+      record.id = 'prod_' + Date.now();
+      records.push(record);
+    }
+    this.saveProductionRecords(records);
+  },
+
+  deleteProductionRecord(recordId) {
+    const records = this.getProductionRecords().filter(r => r.id !== recordId);
+    this.saveProductionRecords(records);
+  },
+
+  getProductionByDate(date, productId) {
+    const records = this.getProductionRecords();
+    const record = records.find(r => r.date === date && r.productId === productId);
+    return record ? record.quantity : 0;
+  },
+
+  // 不良记录
+  getDefectRecords() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.DEFECTS) || '[]');
+  },
+
+  saveDefectRecords(records) {
+    localStorage.setItem(STORAGE_KEYS.DEFECTS, JSON.stringify(records));
+  },
+
+  addDefectRecord(record) {
+    const records = this.getDefectRecords();
+    record.id = 'defect_' + Date.now();
+    records.push(record);
+    this.saveDefectRecords(records);
+    return record;
+  },
+
+  updateDefectRecord(record) {
+    const records = this.getDefectRecords();
+    const index = records.findIndex(r => r.id === record.id);
+    if (index !== -1) {
+      records[index] = record;
+      this.saveDefectRecords(records);
+    }
+  },
+
+  deleteDefectRecord(recordId) {
+    const records = this.getDefectRecords().filter(r => r.id !== recordId);
+    this.saveDefectRecords(records);
+  },
+
+  // 统计数据
+  getDefectsByDate(date, productId) {
+    const records = this.getDefectRecords();
+    return records.filter(r => r.date === date && r.productId === productId);
+  },
+
+  getDailyDefectTotal(date, productId) {
+    const defects = this.getDefectsByDate(date, productId);
+    return defects.reduce((sum, d) => sum + d.quantity, 0);
+  },
+
+  // 导出全部数据
+  exportAll() {
+    return {
+      products: this.getProducts(),
+      production: this.getProductionRecords(),
+      defects: this.getDefectRecords(),
+      exportTime: new Date().toISOString(),
+      version: '1.0'
+    };
+  },
+
+  // 导入数据
+  importAll(data) {
+    if (data.products) {
+      this.saveProducts(data.products);
+    }
+    if (data.production) {
+      this.saveProductionRecords(data.production);
+    }
+    if (data.defects) {
+      this.saveDefectRecords(data.defects);
+    }
+  },
+
+  // 清空所有数据
+  clearAll() {
+    localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
+    localStorage.removeItem(STORAGE_KEYS.PRODUCTION);
+    localStorage.removeItem(STORAGE_KEYS.DEFECTS);
+  }
+};
+
+// 初始化
+DataStore.init();
+
+// ==================== 报废率等级判定 ====================
+
+const DefectLevels = {
+  // 判定标准（从 Excel 中提取）
+  getLevel(rate) {
+    if (rate <= 0.5) return { level: '正常', color: 'text-green-600', bg: 'bg-green-50' };
+    if (rate <= 1) return { level: '轻度', color: 'text-lime-600', bg: 'bg-lime-50' };
+    if (rate <= 1.5) return { level: '一般', color: 'text-yellow-600', bg: 'bg-yellow-50' };
+    if (rate <= 2) return { level: '中度', color: 'text-orange-500', bg: 'bg-orange-50' };
+    if (rate <= 3) return { level: '较重', color: 'text-orange-600', bg: 'bg-orange-100' };
+    if (rate <= 4) return { level: '重度', color: 'text-red-500', bg: 'bg-red-50' };
+    return { level: '极危', color: 'text-red-700', bg: 'bg-red-100' };
+  }
+};
+
+// ==================== Excel 导入解析 ====================
+
+const ExcelImporter = {
+  parseProductsFromExcel(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array', cellDates: false, cellText: true });
+          const sheetName = workbook.SheetNames[0];
+          const firstSheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '', blankrows: false });
+          
+          const result = this.parseProductRows(rows);
+          resolve(result);
+        } catch (err) {
+          reject(new Error('解析 Excel 文件失败：' + err.message));
+        }
+      };
+      reader.onerror = () => reject(new Error('读取文件失败'));
+      reader.readAsArrayBuffer(file);
+    });
+  },
+
+  parseProductRows(rows) {
+    const products = [];
+    const defectRecords = [];
+    const productionRecords = [];  // 新增：产量记录
+    const DEFECT_TYPES = ['尺寸超差', '人为操作', '外观不良', '设备原因'];
+    let currentProduct = null;
+    let currentType = null;
+    let excelDate = null;
+    let productionColTitle = null;  // 产量列标题（如 "7月24日产量"）
+
+    // 尝试从第一行解析日期和产量
+    if (rows.length > 0) {
+      // D列日期
+      if (rows[0].length > 3) {
+        const rawDate = rows[0][3];
+        if (rawDate && !isNaN(rawDate)) {
+          const d = new Date((rawDate - 25569) * 86400 * 1000);
+          excelDate = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+      }
+      // E列产量标题
+      if (rows[0].length > 4) {
+        productionColTitle = String(rows[0][4] || '').trim();
+      }
+    }
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      
+      const col0 = (typeof row[0] === 'string' ? row[0] : String(row[0] || '')).trim();
+      const col1 = (typeof row[1] === 'string' ? row[1] : String(row[1] || '')).trim();
+      const col2 = (typeof row[2] === 'string' ? row[2] : String(row[2] || '')).trim();
+      const col3 = row[3];  // 报废数量
+
+      // 跳过空行和表头
+      if (!col0 && !col1 && !col2 && !col3) continue;
+      if (col0 === '产品名称') continue;
+
+      // 检测新产品名
+      const isDefectType = DEFECT_TYPES.includes(col0);
+      
+      if (col0 && !isDefectType && col0.length > 1) {
+        const cleanName = col0.replace(/\n/g, '').trim();
+        if (currentProduct) {
+          currentProduct.defectTypes = currentProduct.defectTypes.filter(dt => dt.descriptions.length > 0);
+          products.push(currentProduct);
+        }
+        currentProduct = {
+          name: cleanName,
+          defectTypes: DEFECT_TYPES.map(t => ({ type: t, descriptions: [] }))
+        };
+        currentType = null;
+        
+        // 读取该产品行的产量（E列，第5列，即 row[4]）
+        const col4 = row[4];
+        if (col4 && !isNaN(col4) && excelDate) {
+          productionRecords.push({
+            productName: cleanName,
+            date: excelDate,
+            quantity: parseInt(col4)
+          });
+        }
+      }
+
+      if (!currentProduct) continue;
+
+      // 检测不良类别
+      if (col1 && DEFECT_TYPES.includes(col1)) {
+        currentType = col1;
+        // 如果类别行有描述（如人为操作+调机件在同一行），继续处理
+        if (col2 && !DEFECT_TYPES.includes(col2)) {
+          const typeObj = currentProduct.defectTypes.find(t => t.type === currentType);
+          if (typeObj && !typeObj.descriptions.includes(col2)) {
+            typeObj.descriptions.push(col2);
+          }
+          // 如果有报废数量
+          if (col3 && !isNaN(col3) && excelDate) {
+            defectRecords.push({
+              productName: currentProduct.name,
+              date: excelDate,
+              defectType: currentType,
+              defectDesc: col2,
+              quantity: parseInt(col3)
+            });
+          }
+        }
+        continue;
+      }
+
+      // 添加不良描述
+      if (currentType && col2 && !DEFECT_TYPES.includes(col2)) {
+        const typeObj = currentProduct.defectTypes.find(t => t.type === currentType);
+        if (typeObj && !typeObj.descriptions.includes(col2)) {
+          typeObj.descriptions.push(col2);
+        }
+        // 如果有报废数量
+        if (col3 && !isNaN(col3) && excelDate) {
+          defectRecords.push({
+            productName: currentProduct.name,
+            date: excelDate,
+            defectType: currentType,
+            defectDesc: col2,
+            quantity: parseInt(col3)
+          });
+        }
+      }
+    }
+
+    // 保存最后一个产品
+    if (currentProduct) {
+      currentProduct.defectTypes = currentProduct.defectTypes.filter(dt => dt.descriptions.length > 0);
+      products.push(currentProduct);
+    }
+
+    return { products, defectRecords, productionRecords, excelDate };
+  }
+};
+
+</script>
+  <script>
+/**
+ * 主应用逻辑 - SPA 路由和页面管理
+ */
+
+const App = {
+  currentPage: 'dashboard',
+  charts: {},
+
+  init() {
+    // 初始化数据
+    DataStore.init();
+    
+    // 设置默认日期
+    const today = Utils.getToday();
+    document.getElementById('defect-date').value = today;
+    document.getElementById('production-date').value = today;
+    document.getElementById('register-filter-date').value = today;
+    document.getElementById('production-filter-date').value = today;
+    
+    // 设置报表默认日期范围（本周）
+    document.getElementById('report-start').value = Utils.getWeekStart(today);
+    document.getElementById('report-end').value = Utils.getWeekEnd(today);
+
+    // 初始化各模块
+    this.initEventListeners();
+    Dashboard.init();
+    Register.init();
+    Production.init();
+    Report.init();
+    Products.init();
+    DataManager.init();
+
+    // 加载默认页面
+    this.navigate('dashboard');
+  },
+
+  initEventListeners() {
+    // 不良品登记表单
+    document.getElementById('defect-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      Register.saveDefect();
+    });
+
+    // 产量录入表单
+    document.getElementById('production-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      Production.saveProduction();
+    });
+
+    // 产品选择联动
+    document.getElementById('defect-product').addEventListener('change', (e) => {
+      Register.loadDefectTypes(e.target.value);
+    });
+
+    document.getElementById('defect-type').addEventListener('change', (e) => {
+      Register.loadDefectDescriptions(e.target.value);
+    });
+  },
+
+  navigate(page) {
+    // 隐藏所有页面
+    document.querySelectorAll('.page-section').forEach(section => {
+      section.classList.add('hidden');
+    });
+
+    // 显示目标页面
+    const targetSection = document.getElementById(`page-${page}`);
+    if (targetSection) {
+      targetSection.classList.remove('hidden');
+    }
+
+    // 更新导航状态
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('active');
+      if (item.dataset.page === page) {
+        item.classList.add('active');
+      }
+    });
+
+    this.currentPage = page;
+
+    // 页面特定初始化
+    switch (page) {
+      case 'dashboard':
+        Dashboard.refresh();
+        break;
+      case 'register':
+        Register.loadRecords();
+        break;
+      case 'production':
+        Production.loadRecords();
+        break;
+      case 'report':
+        Report.init();
+        break;
+      case 'products':
+        Products.loadList();
+        break;
+      case 'data':
+        DataManager.refresh();
+        break;
+    }
+  }
+};
+
+// ==================== 数据看板模块 ====================
+
+const Dashboard = {
+  charts: {},
+  selectedDate: null,  // 用户选择的日期，null 表示今天
+
+  init() {
+    this.initCharts();
+    // 初始化日期选择器
+    const picker = document.getElementById('dash-date-picker');
+    picker.value = Utils.getToday();
+    this.selectedDate = Utils.getToday();
+  },
+
+  onDateChange() {
+    const picker = document.getElementById('dash-date-picker');
+    this.selectedDate = picker.value;
+    this.refresh();
+  },
+
+  goToday() {
+    const today = Utils.getToday();
+    this.selectedDate = today;
+    document.getElementById('dash-date-picker').value = today;
+    this.refresh();
+  },
+
+  initCharts() {
+    // 近7天不良率趋势
+    const trendCtx = document.getElementById('chart-trend');
+    if (trendCtx) {
+      this.charts.trend = new Chart(trendCtx, {
+        type: 'line',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { callback: v => v + '%' } }
+          }
+        }
+      });
+    }
+
+    // 不良类型占比
+    const typeCtx = document.getElementById('chart-type');
+    if (typeCtx) {
+      this.charts.type = new Chart(typeCtx, {
+        type: 'doughnut',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'right' } }
+        }
+      });
+    }
+
+    // 各产品今日报废数
+    const productCtx = document.getElementById('chart-product');
+    if (productCtx) {
+      this.charts.product = new Chart(productCtx, {
+        type: 'bar',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
+
+    // 产品不良率排名
+    const rankingCtx = document.getElementById('chart-ranking');
+    if (rankingCtx) {
+      this.charts.ranking = new Chart(rankingCtx, {
+        type: 'bar',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { callback: v => v + '%' } } }
+        }
+      });
+    }
+  },
+
+  refresh() {
+    const targetDate = this.selectedDate || Utils.getToday();
+    const today = Utils.getToday();
+    const products = DataStore.getProducts();
+    const productionRecords = DataStore.getProductionRecords();
+    const defectRecords = DataStore.getDefectRecords();
+
+    // 更新标签文字
+    const labelEl = document.getElementById('dash-day-label');
+    if (targetDate === today) {
+      labelEl.textContent = '今日';
+    } else {
+      labelEl.textContent = targetDate;
+    }
+
+    // ========== 选定日概览 ==========
+    const dayStats = this.calcPeriodStats(products, productionRecords, defectRecords, [targetDate]);
+    document.getElementById('dash-day-production').textContent = dayStats.totalProduction;
+    document.getElementById('dash-day-defects').textContent = dayStats.totalDefects;
+    document.getElementById('dash-day-rate').textContent = dayStats.totalProduction > 0 
+      ? Utils.formatPercent(Utils.calcDefectRate(dayStats.totalDefects, dayStats.totalProduction))
+      : '需录入产量';
+    document.getElementById('dash-day-product-count').textContent = dayStats.activeProducts;
+
+    // ========== 选定日所在周概览 ==========
+    const weekDates = Utils.getWeekDates(targetDate);
+    const weekStats = this.calcPeriodStats(products, productionRecords, defectRecords, weekDates);
+    document.getElementById('dash-week-production').textContent = weekStats.totalProduction;
+    document.getElementById('dash-week-defects').textContent = weekStats.totalDefects;
+    document.getElementById('dash-week-rate').textContent = weekStats.totalProduction > 0
+      ? Utils.formatPercent(Utils.calcDefectRate(weekStats.totalDefects, weekStats.totalProduction))
+      : '需录入产量';
+    document.getElementById('dash-week-product-count').textContent = weekStats.activeProducts;
+
+    // ========== 选定日所在月概览 ==========
+    const monthStart = targetDate.substring(0, 7) + '-01';
+    const monthDates = Utils.getDateRange(monthStart, targetDate);
+    const monthStats = this.calcPeriodStats(products, productionRecords, defectRecords, monthDates);
+    document.getElementById('dash-month-production').textContent = monthStats.totalProduction;
+    document.getElementById('dash-month-defects').textContent = monthStats.totalDefects;
+    document.getElementById('dash-month-rate').textContent = monthStats.totalProduction > 0
+      ? Utils.formatPercent(Utils.calcDefectRate(monthStats.totalDefects, monthStats.totalProduction))
+      : '需录入产量';
+    document.getElementById('dash-month-product-count').textContent = monthStats.activeProducts;
+
+    // 近7天不良率趋势
+    this.updateTrendChart(products, productionRecords, defectRecords);
+    
+    // 不良类型占比（用本周数据）
+    this.updateTypeChart(defectRecords, weekDates);
+    
+    // 各产品选定日报废数
+    this.updateProductChart(products, defectRecords, targetDate);
+    
+    // 产品不良率排名（用选定日所在周数据）
+    this.updateRankingChart(products, productionRecords, defectRecords, weekDates);
+    
+    // 选定日报废明细
+    this.renderDayDefects(products, defectRecords, targetDate);
+    
+    // 选定日所在周不良描述 TOP10
+    this.renderDefectTop10(products, defectRecords, weekDates);
+  },
+
+  calcPeriodStats(products, productionRecords, defectRecords, dateRange) {
+    let totalProduction = 0;
+    let totalDefects = 0;
+    let activeProducts = 0;
+
+    products.forEach(product => {
+      const prodQty = productionRecords
+        .filter(r => dateRange.includes(r.date) && r.productId === product.id)
+        .reduce((sum, r) => sum + r.quantity, 0);
+      const defects = defectRecords
+        .filter(r => dateRange.includes(r.date) && r.productId === product.id)
+        .reduce((sum, r) => sum + r.quantity, 0);
+      
+      totalProduction += prodQty;
+      totalDefects += defects;
+      if (prodQty > 0 || defects > 0) activeProducts++;
+    });
+
+    return { totalProduction, totalDefects, activeProducts };
+  },
+
+  renderDayDefects(products, defectRecords, targetDate) {
+    if (!targetDate) {
+      document.getElementById('dash-defect-detail-date').textContent = '';
+      document.getElementById('dash-defect-detail').innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-8">暂无报废记录</td></tr>';
+      return;
+    }
+
+    const dayRecords = defectRecords.filter(r => r.date === targetDate);
+    const productMap = {};
+    products.forEach(p => productMap[p.id] = p.name);
+
+    document.getElementById('dash-defect-detail-date').textContent = `日期: ${targetDate}`;
+
+    if (dayRecords.length === 0) {
+      document.getElementById('dash-defect-detail').innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-8">当日无报废记录</td></tr>';
+      return;
+    }
+
+    document.getElementById('dash-defect-detail').innerHTML = dayRecords.map(record => `
+      <tr>
+        <td>${productMap[record.productId] || '未知'}</td>
+        <td>${record.defectType}</td>
+        <td>${record.defectDesc}</td>
+        <td class="font-semibold text-red-600">${record.quantity}</td>
+      </tr>
+    `).join('');
+  },
+
+  renderDefectTop10(products, defectRecords, dateRange) {
+    const weekRecords = defectRecords.filter(r => dateRange.includes(r.date));
+    
+    if (weekRecords.length === 0) {
+      document.getElementById('dash-defect-top10').innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 py-8">暂无数据</td></tr>';
+      return;
+    }
+
+    // 按不良描述汇总
+    const descCount = {};
+    weekRecords.forEach(r => {
+      const key = `${r.defectDesc}|${r.defectType}`;
+      if (!descCount[key]) {
+        descCount[key] = { desc: r.defectDesc, type: r.defectType, count: 0 };
+      }
+      descCount[key].count += r.quantity;
+    });
+
+    const total = weekRecords.reduce((sum, r) => sum + r.quantity, 0);
+    const sorted = Object.values(descCount).sort((a, b) => b.count - a.count).slice(0, 10);
+
+    document.getElementById('dash-defect-top10').innerHTML = sorted.map((item, index) => {
+      const percent = ((item.count / total) * 100).toFixed(1);
+      const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+      return `
+        <tr>
+          <td class="text-center font-bold">${medal}</td>
+          <td class="font-medium">${item.desc}</td>
+          <td><span class="px-2 py-0.5 rounded text-xs bg-gray-100">${item.type}</span></td>
+          <td class="font-semibold text-red-600">${item.count}</td>
+          <td class="text-gray-500">${percent}%</td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  updateTrendChart(products, productionRecords, defectRecords) {
+    const dates = Utils.getRecentDays(7);
+    const rates = dates.map(date => {
+      let totalProd = 0;
+      let totalDefect = 0;
+      products.forEach(product => {
+        const prod = productionRecords.find(r => r.date === date && r.productId === product.id);
+        totalProd += prod ? prod.quantity : 0;
+        totalDefect += defectRecords
+          .filter(r => r.date === date && r.productId === product.id)
+          .reduce((sum, r) => sum + r.quantity, 0);
+      });
+      return Utils.calcDefectRate(totalDefect, totalProd);
+    });
+
+    this.charts.trend.data.labels = dates.map(d => d.slice(5));
+    this.charts.trend.data.datasets = [{
+      label: '综合不良率',
+      data: rates,
+      borderColor: '#3b82f6',
+      backgroundColor: 'rgba(59, 130, 246, 0.1)',
+      fill: true,
+      tension: 0.4
+    }];
+    this.charts.trend.update();
+  },
+
+  updateTypeChart(defectRecords, dateRange) {
+    const typeCount = {};
+    defectRecords
+      .filter(r => dateRange.includes(r.date))
+      .forEach(r => {
+        typeCount[r.defectType] = (typeCount[r.defectType] || 0) + r.quantity;
+      });
+
+    const labels = Object.keys(typeCount);
+    const data = Object.values(typeCount);
+    const colors = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'];
+
+    this.charts.type.data.labels = labels;
+    this.charts.type.data.datasets = [{
+      data: data,
+      backgroundColor: colors.slice(0, labels.length)
+    }];
+    this.charts.type.update();
+  },
+
+  updateProductChart(products, defectRecords, today) {
+    const labels = products.map(p => p.name);
+    const data = products.map(product => 
+      defectRecords
+        .filter(r => r.date === today && r.productId === product.id)
+        .reduce((sum, r) => sum + r.quantity, 0)
+    );
+
+    this.charts.product.data.labels = labels;
+    this.charts.product.data.datasets = [{
+      label: '报废数',
+      data: data,
+      backgroundColor: '#ef4444'
+    }];
+    this.charts.product.update();
+  },
+
+  updateRankingChart(products, productionRecords, defectRecords, dateRange) {
+    const rankings = products.map(product => {
+      const prodQty = productionRecords
+        .filter(r => dateRange.includes(r.date) && r.productId === product.id)
+        .reduce((sum, r) => sum + r.quantity, 0);
+      const defects = defectRecords
+        .filter(r => dateRange.includes(r.date) && r.productId === product.id)
+        .reduce((sum, r) => sum + r.quantity, 0);
+      return {
+        name: product.name,
+        rate: Utils.calcDefectRate(defects, prodQty)
+      };
+    }).sort((a, b) => b.rate - a.rate);
+
+    this.charts.ranking.data.labels = rankings.map(r => r.name);
+    this.charts.ranking.data.datasets = [{
+      label: '不良率',
+      data: rankings.map(r => r.rate),
+      backgroundColor: rankings.map(r => 
+        r.rate > 5 ? '#ef4444' : r.rate > 2 ? '#f59e0b' : '#10b981'
+      )
+    }];
+    this.charts.ranking.update();
+  }
+};
+
+// ==================== 不良品登记模块 ====================
+
+const Register = {
+  init() {
+    this.loadProducts();
+  },
+
+  loadProducts() {
+    const select = document.getElementById('defect-product');
+    const products = DataStore.getProducts();
+    select.innerHTML = '<option value="">请选择产品</option>';
+    products.forEach(product => {
+      const option = document.createElement('option');
+      option.value = product.id;
+      option.textContent = product.name;
+      select.appendChild(option);
+    });
+  },
+
+  loadDefectTypes(productId) {
+    const typeSelect = document.getElementById('defect-type');
+    const descSelect = document.getElementById('defect-desc');
+    
+    if (!productId) {
+      typeSelect.innerHTML = '<option value="">请先选择产品</option>';
+      typeSelect.disabled = true;
+      descSelect.innerHTML = '<option value="">请先选择类别</option>';
+      descSelect.disabled = true;
+      return;
+    }
+
+    const product = DataStore.getProductById(productId);
+    if (!product) return;
+
+    typeSelect.innerHTML = '<option value="">请选择不良类别</option>';
+    product.defectTypes.forEach(dt => {
+      const option = document.createElement('option');
+      option.value = dt.type;
+      option.textContent = dt.type;
+      typeSelect.appendChild(option);
+    });
+    typeSelect.disabled = false;
+
+    descSelect.innerHTML = '<option value="">请先选择类别</option>';
+    descSelect.disabled = true;
+  },
+
+  loadDefectDescriptions(type) {
+    const descSelect = document.getElementById('defect-desc');
+    const productId = document.getElementById('defect-product').value;
+    
+    if (!type || !productId) {
+      descSelect.innerHTML = '<option value="">请先选择类别</option>';
+      descSelect.disabled = true;
+      return;
+    }
+
+    const product = DataStore.getProductById(productId);
+    const defectType = product.defectTypes.find(dt => dt.type === type);
+    
+    if (!defectType) return;
+
+    descSelect.innerHTML = '<option value="">请选择不良描述</option>';
+    defectType.descriptions.forEach(desc => {
+      const option = document.createElement('option');
+      option.value = desc;
+      option.textContent = desc;
+      descSelect.appendChild(option);
+    });
+    descSelect.disabled = false;
+  },
+
+  saveDefect() {
+    const date = document.getElementById('defect-date').value;
+    const productId = document.getElementById('defect-product').value;
+    const defectType = document.getElementById('defect-type').value;
+    const defectDesc = document.getElementById('defect-desc').value;
+    const quantity = parseInt(document.getElementById('defect-quantity').value);
+    const note = document.getElementById('defect-note').value;
+
+    if (!date || !productId || !defectType || !defectDesc || !quantity) {
+      Utils.showToast('请填写完整信息', 'error');
+      return;
+    }
+
+    const record = {
+      date,
+      productId,
+      defectType,
+      defectDesc,
+      quantity,
+      note
+    };
+
+    DataStore.addDefectRecord(record);
+    Utils.showToast('登记成功！');
+    
+    // 重置表单
+    document.getElementById('defect-quantity').value = '';
+    document.getElementById('defect-note').value = '';
+    
+    // 刷新记录列表
+    this.loadRecords();
+  },
+
+  loadRecords() {
+    const filterDate = document.getElementById('register-filter-date').value || Utils.getToday();
+    const records = DataStore.getDefectRecords().filter(r => r.date === filterDate);
+    const products = DataStore.getProducts();
+    const tbody = document.getElementById('register-records');
+
+    if (records.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-500 py-8">暂无记录</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = records.map(record => {
+      const product = products.find(p => p.id === record.productId);
+      return `
+        <tr>
+          <td>${record.date}</td>
+          <td>${product ? product.name : '未知产品'}</td>
+          <td>${record.defectType}</td>
+          <td>${record.defectDesc}</td>
+          <td class="font-semibold text-red-600">${record.quantity}</td>
+          <td>${record.note || '-'}</td>
+          <td>
+            <button onclick="Register.deleteRecord('${record.id}')" class="text-red-600 hover:text-red-800 text-sm">
+              删除
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  deleteRecord(recordId) {
+    if (Utils.confirm('确定要删除这条记录吗？')) {
+      DataStore.deleteDefectRecord(recordId);
+      Utils.showToast('记录已删除');
+      this.loadRecords();
+    }
+  }
+};
+
+// ==================== 产量录入模块 ====================
+
+const Production = {
+  init() {
+    this.loadProducts();
+  },
+
+  loadProducts() {
+    const select = document.getElementById('production-product');
+    const products = DataStore.getProducts();
+    select.innerHTML = '<option value="">请选择产品</option>';
+    products.forEach(product => {
+      const option = document.createElement('option');
+      option.value = product.id;
+      option.textContent = product.name;
+      select.appendChild(option);
+    });
+  },
+
+  saveProduction() {
+    const date = document.getElementById('production-date').value;
+    const productId = document.getElementById('production-product').value;
+    const quantity = parseInt(document.getElementById('production-quantity').value);
+
+    if (!date || !productId || quantity === undefined || isNaN(quantity)) {
+      Utils.showToast('请填写完整信息', 'error');
+      return;
+    }
+
+    const record = {
+      date,
+      productId,
+      quantity
+    };
+
+    DataStore.addProductionRecord(record);
+    Utils.showToast('产量录入成功！');
+    
+    // 重置表单
+    document.getElementById('production-quantity').value = '';
+    
+    // 刷新记录列表
+    this.loadRecords();
+  },
+
+  loadRecords() {
+    const filterDate = document.getElementById('production-filter-date').value;
+    let records = DataStore.getProductionRecords();
+    
+    if (filterDate) {
+      records = records.filter(r => r.date === filterDate);
+    }
+    
+    records = Utils.sortByDateDesc(records);
+    const products = DataStore.getProducts();
+    const tbody = document.getElementById('production-records');
+
+    if (records.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-8">暂无记录</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = records.map(record => {
+      const product = products.find(p => p.id === record.productId);
+      return `
+        <tr>
+          <td>${record.date}</td>
+          <td>${product ? product.name : '未知产品'}</td>
+          <td class="font-semibold text-green-600">${record.quantity}</td>
+          <td>
+            <button onclick="Production.deleteRecord('${record.id}')" class="text-red-600 hover:text-red-800 text-sm">
+              删除
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  },
+
+  deleteRecord(recordId) {
+    if (Utils.confirm('确定要删除这条记录吗？')) {
+      DataStore.deleteProductionRecord(recordId);
+      Utils.showToast('记录已删除');
+      this.loadRecords();
+    }
+  }
+};
+
+// ==================== 统计报表模块 ====================
+
+const Report = {
+  currentData: [],
+
+  init() {
+    this.loadProducts();
+  },
+
+  loadProducts() {
+    const select = document.getElementById('report-product');
+    const products = DataStore.getProducts();
+    select.innerHTML = '<option value="">全部产品</option>';
+    products.forEach(product => {
+      const option = document.createElement('option');
+      option.value = product.id;
+      option.textContent = product.name;
+      select.appendChild(option);
+    });
+  },
+
+  generate() {
+    const reportType = document.getElementById('report-type').value;
+    const startDate = document.getElementById('report-start').value;
+    const endDate = document.getElementById('report-end').value;
+    const productFilter = document.getElementById('report-product').value;
+
+    if (!startDate || !endDate) {
+      Utils.showToast('请选择日期范围', 'error');
+      return;
+    }
+
+    const products = DataStore.getProducts();
+    const productionRecords = DataStore.getProductionRecords();
+    const defectRecords = DataStore.getDefectRecords();
+    
+    let filteredProducts = productFilter 
+      ? products.filter(p => p.id === productFilter)
+      : products;
+
+    this.currentData = [];
+
+    if (reportType === 'daily') {
+      const dates = Utils.getDateRange(startDate, endDate);
+      dates.forEach(date => {
+        filteredProducts.forEach(product => {
+          const prod = productionRecords.find(r => r.date === date && r.productId === product.id);
+          const prodQty = prod ? prod.quantity : 0;
+          const defects = defectRecords
+            .filter(r => r.date === date && r.productId === product.id)
+            .reduce((sum, r) => sum + r.quantity, 0);
+          
+          if (prodQty > 0 || defects > 0) {
+            this.currentData.push({
+              period: date,
+              product: product.name,
+              production: prodQty,
+              defects: defects,
+              rate: Utils.calcDefectRate(defects, prodQty)
+            });
+          }
+        });
+      });
+    } else if (reportType === 'weekly') {
+      // 按周汇总
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      let currentWeekStart = new Date(start);
+      
+      while (currentWeekStart <= end) {
+        const weekStart = Utils.getWeekStart(currentWeekStart);
+        const weekEnd = Utils.getWeekEnd(currentWeekStart);
+        const weekDates = Utils.getWeekDates(currentWeekStart);
+        
+        filteredProducts.forEach(product => {
+          const prodQty = productionRecords
+            .filter(r => weekDates.includes(r.date) && r.productId === product.id)
+            .reduce((sum, r) => sum + r.quantity, 0);
+          const defects = defectRecords
+            .filter(r => weekDates.includes(r.date) && r.productId === product.id)
+            .reduce((sum, r) => sum + r.quantity, 0);
+          
+          if (prodQty > 0 || defects > 0) {
+            this.currentData.push({
+              period: `${weekStart} ~ ${weekEnd}`,
+              product: product.name,
+              production: prodQty,
+              defects: defects,
+              rate: Utils.calcDefectRate(defects, prodQty)
+            });
+          }
+        });
+        
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+      }
+    } else if (reportType === 'monthly') {
+      // 按月汇总
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      filteredProducts.forEach(product => {
+        const prodQty = productionRecords
+          .filter(r => {
+            const d = new Date(r.date);
+            return d >= start && d <= end && r.productId === product.id;
+          })
+          .reduce((sum, r) => sum + r.quantity, 0);
+        const defects = defectRecords
+          .filter(r => {
+            const d = new Date(r.date);
+            return d >= start && d <= end && r.productId === product.id;
+          })
+          .reduce((sum, r) => sum + r.quantity, 0);
+        
+        if (prodQty > 0 || defects > 0) {
+          this.currentData.push({
+            period: `${startDate} ~ ${endDate}`,
+            product: product.name,
+            production: prodQty,
+            defects: defects,
+            rate: Utils.calcDefectRate(defects, prodQty)
+          });
+        }
+      });
+    }
+
+    this.renderTable();
+  },
+
+  renderTable() {
+    const tbody = document.getElementById('report-body');
+    
+    if (this.currentData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray-500 py-8">暂无数据</td></tr>';
+      return;
+    }
+
+    // 按 period 分组计算汇总
+    const periodGroups = {};
+    this.currentData.forEach(row => {
+      if (!periodGroups[row.period]) {
+        periodGroups[row.period] = { totalProduction: 0, totalDefects: 0, rows: [] };
+      }
+      periodGroups[row.period].totalProduction += row.production;
+      periodGroups[row.period].totalDefects += row.defects;
+      periodGroups[row.period].rows.push(row);
+    });
+
+    let html = '';
+    const periods = Object.keys(periodGroups);
+
+    periods.forEach(period => {
+      const group = periodGroups[period];
+      const groupRate = Utils.calcDefectRate(group.totalDefects, group.totalProduction);
+      
+      // 明细行
+      group.rows.forEach(row => {
+        const level = DefectLevels.getLevel(row.rate);
+        html += `
+          <tr class="border-b border-gray-100">
+            <td class="text-gray-500 text-sm">${row.period}</td>
+            <td>${row.product}</td>
+            <td>${row.production}</td>
+            <td class="font-semibold text-red-600">${row.defects}</td>
+            <td class="font-semibold ${level.color}">${Utils.formatPercent(row.rate)}</td>
+            <td><span class="px-2 py-0.5 rounded text-xs font-medium ${level.color} ${level.bg}">${level.level}</span></td>
+          </tr>
+        `;
+      });
+
+      // 汇总行
+      const groupLevel = DefectLevels.getLevel(groupRate);
+      html += `
+        <tr class="bg-blue-50 font-bold">
+          <td>
+            <span class="px-2 py-0.5 bg-blue-600 text-white text-xs rounded">汇总</span>
+            ${period}
+          </td>
+          <td>全部产品</td>
+          <td class="text-blue-700">${group.totalProduction}</td>
+          <td class="text-red-600">${group.totalDefects}</td>
+          <td class="${groupLevel.color}">${Utils.formatPercent(groupRate)}</td>
+          <td><span class="px-2 py-0.5 rounded text-xs font-medium ${groupLevel.color} ${groupLevel.bg}">${groupLevel.level}</span></td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+  },
+
+  exportExcel() {
+    if (this.currentData.length === 0) {
+      Utils.showToast('请先生成报表', 'error');
+      return;
+    }
+
+    // 按 period 分组
+    const periodGroups = {};
+    this.currentData.forEach(row => {
+      if (!periodGroups[row.period]) {
+        periodGroups[row.period] = { totalProduction: 0, totalDefects: 0, rows: [] };
+      }
+      periodGroups[row.period].totalProduction += row.production;
+      periodGroups[row.period].totalDefects += row.defects;
+      periodGroups[row.period].rows.push(row);
+    });
+
+    let exportData = [];
+    const periods = Object.keys(periodGroups);
+
+    periods.forEach(period => {
+      const group = periodGroups[period];
+      const groupRate = Utils.calcDefectRate(group.totalDefects, group.totalProduction);
+      
+      // 明细行
+      group.rows.forEach(row => {
+        const level = DefectLevels.getLevel(row.rate);
+        exportData.push({
+          '日期/周期': row.period,
+          '产品': row.product,
+          '产量': row.production,
+          '报废数': row.defects,
+          '不良率': Utils.formatPercent(row.rate),
+          '等级': level.level
+        });
+      });
+
+      // 汇总行
+      const groupLevel = DefectLevels.getLevel(groupRate);
+      exportData.push({
+        '日期/周期': period + '【汇总】',
+        '产品': '全部产品',
+        '产量': group.totalProduction,
+        '报废数': group.totalDefects,
+        '不良率': Utils.formatPercent(groupRate),
+        '等级': groupLevel.level
+      });
+    });
+
+    Utils.exportToCSV(exportData, `报废率报表_${Utils.getToday()}.csv`);
+    Utils.showToast('报表已导出');
+  }
+};
+
+// ==================== 产品管理模块 ====================
+
+const Products = {
+  selectedProduct: null,
+
+  init() {
+    this.loadList();
+  },
+
+  loadList() {
+    const products = DataStore.getProducts();
+    const container = document.getElementById('product-list');
+    
+    container.innerHTML = products.map(product => `
+      <div 
+        onclick="Products.selectProduct('${product.id}')"
+        class="p-3 rounded-lg cursor-pointer transition-colors ${this.selectedProduct?.id === product.id ? 'bg-blue-50 border-blue-200 border' : 'hover:bg-gray-50 border border-transparent'}"
+      >
+        <div class="font-medium text-gray-800">${product.name}</div>
+        <div class="text-sm text-gray-500 mt-1">
+          ${product.defectTypes.length} 个类别 / ${product.defectTypes.reduce((sum, dt) => sum + dt.descriptions.length, 0)} 个描述
+        </div>
+      </div>
+    `).join('');
+  },
+
+  selectProduct(productId) {
+    this.selectedProduct = DataStore.getProductById(productId);
+    this.loadList();
+    this.renderDetail();
+  },
+
+  renderDetail() {
+    const container = document.getElementById('product-detail');
+    const title = document.getElementById('product-detail-title');
+    
+    if (!this.selectedProduct) {
+      title.textContent = '选择产品查看详情';
+      container.innerHTML = '<p class="text-gray-500 text-center py-8">请从左侧选择一个产品</p>';
+      return;
+    }
+
+    title.textContent = this.selectedProduct.name;
+    
+    container.innerHTML = `
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h4 class="font-medium text-gray-700">不良类型配置</h4>
+          <div class="space-x-2">
+            <button onclick="Products.editProduct()" class="btn px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+              编辑
+            </button>
+            <button onclick="Products.deleteProduct()" class="btn px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+              删除
+            </button>
+          </div>
+        </div>
+        ${this.selectedProduct.defectTypes.map(dt => `
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="font-medium text-gray-800 mb-2">${dt.type}</div>
+            <div class="flex flex-wrap gap-2">
+              ${dt.descriptions.map(desc => `
+                <span class="px-2 py-1 bg-white rounded border text-sm text-gray-600">${desc}</span>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  },
+
+  showAddForm() {
+    const name = prompt('请输入产品名称：');
+    if (!name) return;
+
+    const product = {
+      name,
+      defectTypes: [
+        { type: '尺寸超差', descriptions: [] },
+        { type: '人为操作', descriptions: [] },
+        { type: '外观不良', descriptions: [] },
+        { type: '设备原因', descriptions: [] }
+      ]
+    };
+
+    DataStore.addProduct(product);
+    Utils.showToast('产品添加成功');
+    this.loadList();
+  },
+
+  editProduct() {
+    if (!this.selectedProduct) return;
+    
+    const newName = prompt('产品名称：', this.selectedProduct.name);
+    if (newName === null) return;
+    
+    this.selectedProduct.name = newName;
+    DataStore.updateProduct(this.selectedProduct);
+    Utils.showToast('产品更新成功');
+    this.loadList();
+    this.renderDetail();
+  },
+
+  deleteProduct() {
+    if (!this.selectedProduct) return;
+    
+    if (Utils.confirm(`确定要删除产品 "${this.selectedProduct.name}" 吗？相关的产量和不良记录也会被删除。`)) {
+      DataStore.deleteProduct(this.selectedProduct.id);
+      this.selectedProduct = null;
+      Utils.showToast('产品已删除');
+      this.loadList();
+      this.renderDetail();
+    }
+  }
+};
+
+// ==================== 数据管理模块 ====================
+
+const DataManager = {
+  init() {
+    this.refresh();
+  },
+
+  refresh() {
+    document.getElementById('data-product-count').textContent = DataStore.getProducts().length;
+    document.getElementById('data-production-count').textContent = DataStore.getProductionRecords().length;
+    document.getElementById('data-defect-count').textContent = DataStore.getDefectRecords().length;
+  },
+
+  // ==================== Excel 导入产品配置 ====================
+
+  async importExcel(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    try {
+      const products = await ExcelImporter.parseProductsFromExcel(file);
+      this.applyImportedProducts(products);
+    } catch (err) {
+      Utils.showToast('导入失败：' + err.message + '，请尝试下方的粘贴方式', 'error');
+    }
+
+    input.value = '';
+  },
+
+  // 从粘贴的 Excel 数据导入（备选方案）
+  importFromPaste() {
+    const text = document.getElementById('paste-excel-data').value.trim();
+    if (!text) {
+      Utils.showToast('请先在 Excel 中复制数据并粘贴到文本框中', 'error');
+      return;
+    }
+
+    const lines = text.split('\n').filter(l => l.trim());
+    const rows = lines.map(line => line.split('\t').map(c => c.trim()));
+    
+    const result = ExcelImporter.parseProductRows(rows);
+    this.applyImportedProducts(result);
+    document.getElementById('paste-excel-data').value = '';
+  },
+
+  applyImportedProducts(result) {
+    const products = result.products || result;
+    const defectRecords = result.defectRecords || [];
+    const productionRecords = result.productionRecords || [];
+    const excelDate = result.excelDate || null;
+
+    if (products.length === 0) {
+      Utils.showToast('未能解析到产品数据，请检查数据格式', 'error');
+      return;
+    }
+
+    let confirmMsg = `解析到 ${products.length} 个产品：\n`;
+    confirmMsg += products.map(p => p.name).join('、');
+    
+    if (defectRecords.length > 0) {
+      confirmMsg += `\n\n报废记录：${defectRecords.length} 条`;
+      if (excelDate) confirmMsg += `（日期：${excelDate}）`;
+    }
+    if (productionRecords.length > 0) {
+      confirmMsg += `\n产量记录：${productionRecords.length} 条`;
+    }
+    
+    confirmMsg += '\n\n导入将替换现有产品配置，确定继续吗？';
+
+    if (Utils.confirm(confirmMsg)) {
+      // 导入产品
+      const productsMap = {};
+      products.forEach(p => {
+        p.id = 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        productsMap[p.name] = p.id;
+      });
+      DataStore.saveProducts(products);
+
+      // 导入报废记录
+      if (defectRecords.length > 0) {
+        defectRecords.forEach(record => {
+          const productId = productsMap[record.productName];
+          if (productId) {
+            DataStore.addDefectRecord({
+              date: record.date,
+              productId: productId,
+              defectType: record.defectType,
+              defectDesc: record.defectDesc,
+              quantity: record.quantity,
+              note: '从Excel导入'
+            });
+          }
+        });
+      }
+
+      // 导入产量记录
+      if (productionRecords.length > 0) {
+        productionRecords.forEach(record => {
+          const productId = productsMap[record.productName];
+          if (productId) {
+            DataStore.addProductionRecord({
+              date: record.date,
+              productId: productId,
+              quantity: record.quantity
+            });
+          }
+        });
+      }
+
+      const msg = `成功导入 ${products.length} 个产品` + 
+        (defectRecords.length > 0 ? ` + ${defectRecords.length} 条报废` : '') +
+        (productionRecords.length > 0 ? ` + ${productionRecords.length} 条产量` : '');
+      Utils.showToast(msg);
+      this.refresh();
+      Register.loadProducts();
+      Production.loadProducts();
+      Report.loadProducts();
+    }
+  },
+
+  // ==================== CSV 导出 ====================
+
+  exportCSV(type) {
+    const products = DataStore.getProducts();
+    const productMap = {};
+    products.forEach(p => { productMap[p.id] = p.name; });
+
+    let exportData = [];
+    let filename = '';
+
+    if (type === 'production' || type === 'all') {
+      const records = DataStore.getProductionRecords();
+      records.forEach(r => {
+        exportData.push({
+          '日期': r.date,
+          '产品名称': productMap[r.productId] || r.productId,
+          '产量': r.quantity
+        });
+      });
+      if (type === 'production') {
+        filename = `产量记录_${Utils.getToday()}.csv`;
+      }
+    }
+
+    if (type === 'defects' || type === 'all') {
+      const records = DataStore.getDefectRecords();
+      records.forEach(r => {
+        exportData.push({
+          '日期': r.date,
+          '产品名称': productMap[r.productId] || r.productId,
+          '不良类别': r.defectType,
+          '不良描述': r.defectDesc,
+          '数量': r.quantity,
+          '备注': r.note || ''
+        });
+      });
+      if (type === 'defects') {
+        filename = `不良记录_${Utils.getToday()}.csv`;
+      }
+    }
+
+    if (type === 'all') {
+      filename = `全部数据_${Utils.getToday()}.csv`;
+    }
+
+    if (exportData.length === 0) {
+      Utils.showToast('没有可导出的数据', 'error');
+      return;
+    }
+
+    Utils.exportToCSV(exportData, filename);
+    Utils.showToast(`已导出 ${exportData.length} 条记录`);
+  },
+
+  // ==================== CSV 导入 ====================
+
+  async importCSV(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    try {
+      const text = await Utils.readFileAsText(file);
+      const rows = Utils.parseCSV(text);
+      
+      if (rows.length < 2) {
+        Utils.showToast('CSV 文件为空或格式不正确', 'error');
+        input.value = '';
+        return;
+      }
+
+      const importType = document.getElementById('import-csv-type').value;
+      
+      if (importType === 'production') {
+        this.importProductionCSV(rows);
+      } else {
+        this.importDefectsCSV(rows);
+      }
+    } catch (err) {
+      Utils.showToast('导入失败：' + err.message, 'error');
+    }
+
+    input.value = '';
+  },
+
+  importProductionCSV(rows) {
+    const products = DataStore.getProducts();
+    const productMap = {};
+    products.forEach(p => { productMap[p.name] = p.id; });
+
+    let count = 0;
+    const header = rows[0];
+    const dateIdx = header.findIndex(h => h.includes('日期'));
+    const nameIdx = header.findIndex(h => h.includes('产品') || h.includes('名称'));
+    const qtyIdx = header.findIndex(h => h.includes('产量') || h.includes('数量'));
+
+    if (dateIdx === -1 || nameIdx === -1 || qtyIdx === -1) {
+      Utils.showToast('CSV 表头不正确，需要：日期, 产品名称, 产量', 'error');
+      return;
+    }
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.length < 3) continue;
+
+      const date = row[dateIdx];
+      const productName = row[nameIdx];
+      const quantity = parseInt(row[qtyIdx]);
+
+      if (!date || !productName || isNaN(quantity)) continue;
+
+      const productId = productMap[productName];
+      if (!productId) {
+        console.warn(`产品 "${productName}" 不存在，已跳过`);
+        continue;
+      }
+
+      DataStore.addProductionRecord({ date, productId, quantity });
+      count++;
+    }
+
+    Utils.showToast(`成功导入 ${count} 条产量记录`);
+    this.refresh();
+  },
+
+  importDefectsCSV(rows) {
+    const products = DataStore.getProducts();
+    const productMap = {};
+    products.forEach(p => { productMap[p.name] = p.id; });
+
+    let count = 0;
+    const header = rows[0];
+    const dateIdx = header.findIndex(h => h.includes('日期'));
+    const nameIdx = header.findIndex(h => h.includes('产品'));
+    const typeIdx = header.findIndex(h => h.includes('类别') || h.includes('类型'));
+    const descIdx = header.findIndex(h => h.includes('描述') || h.includes('说明'));
+    const qtyIdx = header.findIndex(h => h.includes('数量') || h.includes('件数'));
+    const noteIdx = header.findIndex(h => h.includes('备注'));
+
+    if (dateIdx === -1 || nameIdx === -1 || typeIdx === -1 || descIdx === -1 || qtyIdx === -1) {
+      Utils.showToast('CSV 表头不正确，需要：日期, 产品名称, 不良类别, 不良描述, 数量, 备注', 'error');
+      return;
+    }
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.length < 5) continue;
+
+      const date = row[dateIdx];
+      const productName = row[nameIdx];
+      const defectType = row[typeIdx];
+      const defectDesc = row[descIdx];
+      const quantity = parseInt(row[qtyIdx]);
+      const note = noteIdx >= 0 ? (row[noteIdx] || '') : '';
+
+      if (!date || !productName || !defectType || !defectDesc || isNaN(quantity)) continue;
+
+      const productId = productMap[productName];
+      if (!productId) {
+        console.warn(`产品 "${productName}" 不存在，已跳过`);
+        continue;
+      }
+
+      DataStore.addDefectRecord({ date, productId, defectType, defectDesc, quantity, note });
+      count++;
+    }
+
+    Utils.showToast(`成功导入 ${count} 条不良记录`);
+    this.refresh();
+  },
+
+  // ==================== JSON 完整备份 ====================
+
+  exportJSON() {
+    const data = DataStore.exportAll();
+    Utils.downloadJSON(data, `完整备份_${Utils.getToday()}.json`);
+    Utils.showToast('完整备份已导出');
+  },
+
+  async importJSON(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    try {
+      const data = await Utils.readJSONFile(file);
+      if (Utils.confirm('恢复备份将覆盖现有数据，确定要继续吗？')) {
+        DataStore.importAll(data);
+        Utils.showToast('数据恢复成功');
+        this.refresh();
+        Register.loadProducts();
+        Production.loadProducts();
+        Report.loadProducts();
+      }
+    } catch (err) {
+      Utils.showToast(err.message, 'error');
+    }
+    
+    input.value = '';
+  },
+
+  resetData() {
+    if (Utils.confirm('确定要清空所有数据并恢复默认配置吗？此操作不可恢复！')) {
+      DataStore.resetToDefault();
+      Utils.showToast('数据已重置');
+      this.refresh();
+      Register.loadProducts();
+      Production.loadProducts();
+      Report.loadProducts();
+    }
+  }
+};
+
+// 启动应用
+document.addEventListener('DOMContentLoaded', () => {
+  App.init();
+});
+
+</script>
+</body>
+</html>

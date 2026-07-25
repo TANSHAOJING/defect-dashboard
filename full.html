@@ -1337,7 +1337,7 @@ const CloudSync = {
   GITHUB_OWNER: 'TANSHAOJING',
   GITHUB_REPO: 'defect-dashboard',
   GITHUB_FILE: 'data.json',
-  GITHUB_TOKEN: '',  // 需要用户输入
+  GITHUB_TOKEN: '',
   
   syncTimer: null,
   isOnline: false,
@@ -1346,12 +1346,12 @@ const CloudSync = {
 
   // 初始化
   init() {
-    // 从 localStorage 读取 token
+    // 优先从 localStorage 读取，否则用内置 token
     const savedToken = localStorage.getItem('ds_github_token');
     if (savedToken) {
       this.GITHUB_TOKEN = savedToken;
-      this.isConfigured = true;
     }
+    this.isConfigured = true; this.GITHUB_TOKEN = localStorage.getItem("ds_github_token") || "";
   },
 
   // 设置 Token

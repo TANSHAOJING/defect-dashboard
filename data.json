@@ -426,79 +426,79 @@
   ],
   "production": [
     {
-      "id": "prod_1785134318668_lped1c",
+      "id": "prod_1785135636250_9oe730",
       "date": "2026-07-24",
       "productId": "p_1785130752278_5zojjl",
       "quantity": 580
     },
     {
-      "id": "prod_1785134318668_dvxueo",
+      "id": "prod_1785135636250_g8nsph",
       "date": "2026-07-24",
       "productId": "p_1785130752278_39sfwi",
       "quantity": 120
     },
     {
-      "id": "prod_1785134318668_8ybmax",
+      "id": "prod_1785135636250_dkhz4e",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "quantity": 2217
     },
     {
-      "id": "prod_1785134318668_mfesyt",
+      "id": "prod_1785135636250_uvtq56",
       "date": "2026-07-24",
       "productId": "p_1785130752278_923rsl",
       "quantity": 200
     },
     {
-      "id": "prod_1785134318668_n0nt2w",
+      "id": "prod_1785135636250_3huv3h",
       "date": "2026-07-24",
       "productId": "p_1785130752278_9dudse",
       "quantity": 540
     },
     {
-      "id": "prod_1785134318668_b1am86",
+      "id": "prod_1785135636250_y73ikg",
       "date": "2026-07-24",
       "productId": "p_1785130752278_ne1057",
       "quantity": 1836
     },
     {
-      "id": "prod_1785134318668_m1wazq",
+      "id": "prod_1785135636250_7zf4kz",
       "date": "2026-07-25",
       "productId": "p_1785130752278_5zojjl",
       "quantity": 499
     },
     {
-      "id": "prod_1785134318668_xi2n3j",
+      "id": "prod_1785135636250_poi6cx",
       "date": "2026-07-25",
       "productId": "p_1785130752278_39sfwi",
       "quantity": 230
     },
     {
-      "id": "prod_1785134318668_jx13pb",
+      "id": "prod_1785135636250_7n62rk",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "quantity": 1763
     },
     {
-      "id": "prod_1785134318668_u3tilb",
+      "id": "prod_1785135636250_hu5m20",
       "date": "2026-07-25",
       "productId": "p_1785130752278_923rsl",
       "quantity": 379
     },
     {
-      "id": "prod_1785134318668_3yqe3c",
+      "id": "prod_1785135636250_x51n8i",
       "date": "2026-07-25",
       "productId": "p_1785130752278_9dudse",
       "quantity": 599
     },
     {
-      "id": "prod_1785134318668_8xhnbm",
+      "id": "prod_1785135636250_rgscel",
       "date": "2026-07-25",
       "productId": "p_1785130752278_ne1057",
       "quantity": 1748
     },
     {
-      "id": "prod_1785134318668_cwn8ns",
+      "id": "prod_1785135636250_oalnyo",
       "date": "2026-07-25",
       "productId": "p_1785130752278_apqq4b",
       "quantity": 64
@@ -506,7 +506,7 @@
   ],
   "defects": [
     {
-      "id": "defect_1785134318668_vucq2i",
+      "id": "defect_1785135636250_rli1gs",
       "date": "2026-07-24",
       "productId": "p_1785130752278_5zojjl",
       "defectType": "未分类",
@@ -515,7 +515,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_n5l6hi",
+      "id": "defect_1785135636250_qdb7qu",
       "date": "2026-07-24",
       "productId": "p_1785130752278_5zojjl",
       "defectType": "未分类",
@@ -524,7 +524,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_x46odx",
+      "id": "defect_1785135636250_ks7lv6",
       "date": "2026-07-24",
       "productId": "p_1785130752278_5zojjl",
       "defectType": "未分类",
@@ -533,7 +533,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_0lt752",
+      "id": "defect_1785135636250_gr5miw",
       "date": "2026-07-24",
       "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
@@ -542,7 +542,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_dtbtgv",
+      "id": "defect_1785135636250_x3id9y",
       "date": "2026-07-24",
       "productId": "p_1785130752278_39sfwi",
       "defectType": "未分类",
@@ -551,7 +551,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_kyhmg5",
+      "id": "defect_1785135636250_c7s7eh",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -560,7 +560,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_3rsvhp",
+      "id": "defect_1785135636250_06qee1",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
@@ -569,7 +569,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_ukpeee",
+      "id": "defect_1785135636250_mz0ggj",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -578,7 +578,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_gwwlef",
+      "id": "defect_1785135636250_6g8rsf",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -587,7 +587,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_grp30a",
+      "id": "defect_1785135636250_8qnkvm",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -596,7 +596,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_o2kr87",
+      "id": "defect_1785135636250_nju21n",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -605,7 +605,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_gojid1",
+      "id": "defect_1785135636250_nfkn4i",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -614,7 +614,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_zjzetb",
+      "id": "defect_1785135636250_a4gvt5",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -623,7 +623,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_38rvtd",
+      "id": "defect_1785135636250_aog9wb",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -632,7 +632,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_047zcr",
+      "id": "defect_1785135636250_ntp693",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -641,7 +641,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_r59cnm",
+      "id": "defect_1785135636250_7izxak",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -650,7 +650,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_ayfrgx",
+      "id": "defect_1785135636250_sjx4lx",
       "date": "2026-07-24",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -659,7 +659,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_xfh717",
+      "id": "defect_1785135636250_d098la",
       "date": "2026-07-24",
       "productId": "p_1785130752278_923rsl",
       "defectType": "未分类",
@@ -668,7 +668,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_rn7qt9",
+      "id": "defect_1785135636250_to0i78",
       "date": "2026-07-24",
       "productId": "p_1785130752278_923rsl",
       "defectType": "未分类",
@@ -677,7 +677,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_fx6gau",
+      "id": "defect_1785135636250_c8idod",
       "date": "2026-07-24",
       "productId": "p_1785130752278_9dudse",
       "defectType": "未分类",
@@ -686,7 +686,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_jcsrdl",
+      "id": "defect_1785135636250_dxbirv",
       "date": "2026-07-24",
       "productId": "p_1785130752278_9dudse",
       "defectType": "未分类",
@@ -695,7 +695,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_plz1c3",
+      "id": "defect_1785135636250_5gci7y",
       "date": "2026-07-24",
       "productId": "p_1785130752278_9dudse",
       "defectType": "设备原因",
@@ -704,7 +704,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_19aen6",
+      "id": "defect_1785135636250_7uwf0g",
       "date": "2026-07-24",
       "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
@@ -713,7 +713,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_xamg4j",
+      "id": "defect_1785135636250_2e5a4f",
       "date": "2026-07-24",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -722,7 +722,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_km8emw",
+      "id": "defect_1785135636250_9tw2yx",
       "date": "2026-07-24",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -731,7 +731,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_3i23xz",
+      "id": "defect_1785135636250_u9ozjf",
       "date": "2026-07-24",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -740,7 +740,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_y9ldvh",
+      "id": "defect_1785135636250_4beegn",
       "date": "2026-07-24",
       "productId": "p_1785130752278_9g9xqa",
       "defectType": "人为操作",
@@ -749,7 +749,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_sckhme",
+      "id": "defect_1785135636250_e7twai",
       "date": "2026-07-24",
       "productId": "p_1785130752278_apqq4b",
       "defectType": "未分类",
@@ -758,7 +758,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_brm2nx",
+      "id": "defect_1785135636250_52v9wt",
       "date": "2026-07-25",
       "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
@@ -767,7 +767,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_zwbrf9",
+      "id": "defect_1785135636250_kssrk8",
       "date": "2026-07-25",
       "productId": "p_1785130752278_39sfwi",
       "defectType": "未分类",
@@ -776,7 +776,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_ddqack",
+      "id": "defect_1785135636250_a4w7rz",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -785,7 +785,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_eu8y30",
+      "id": "defect_1785135636250_vlcg4x",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
@@ -794,7 +794,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_431zl7",
+      "id": "defect_1785135636250_yaz7vg",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -803,7 +803,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_gzqbe6",
+      "id": "defect_1785135636250_8b6url",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -812,7 +812,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_mxj99h",
+      "id": "defect_1785135636250_vil73c",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -821,7 +821,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_9wb75i",
+      "id": "defect_1785135636250_w5yi9q",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -830,7 +830,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_cu59a3",
+      "id": "defect_1785135636250_pldzk4",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -839,7 +839,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_ttm0vw",
+      "id": "defect_1785135636250_nasi2u",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -848,7 +848,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_aoqabo",
+      "id": "defect_1785135636250_orf8y3",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -857,7 +857,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_qbhm00",
+      "id": "defect_1785135636250_c05sco",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -866,7 +866,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_ks5uac",
+      "id": "defect_1785135636250_px6cq1",
       "date": "2026-07-25",
       "productId": "p_1785130752278_r6zzmn",
       "defectType": "未分类",
@@ -875,7 +875,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_qmey25",
+      "id": "defect_1785135636250_e31rvi",
       "date": "2026-07-25",
       "productId": "p_1785130752278_9dudse",
       "defectType": "未分类",
@@ -884,7 +884,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_d5hp07",
+      "id": "defect_1785135636250_fpmgj1",
       "date": "2026-07-25",
       "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
@@ -893,7 +893,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_d6lwao",
+      "id": "defect_1785135636250_4hx93r",
       "date": "2026-07-25",
       "productId": "p_1785130752278_9dudse",
       "defectType": "未分类",
@@ -902,7 +902,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_gi6c0k",
+      "id": "defect_1785135636250_9v4gxr",
       "date": "2026-07-25",
       "productId": "p_1785130752278_9dudse",
       "defectType": "未分类",
@@ -911,7 +911,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_39fmpf",
+      "id": "defect_1785135636250_ak745r",
       "date": "2026-07-25",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -920,7 +920,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_hcalkg",
+      "id": "defect_1785135636250_tng3oy",
       "date": "2026-07-25",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -929,7 +929,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_59pcyb",
+      "id": "defect_1785135636250_7z9hfd",
       "date": "2026-07-25",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -938,7 +938,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_r0qses",
+      "id": "defect_1785135636250_faa82k",
       "date": "2026-07-25",
       "productId": "p_1785130752278_ne1057",
       "defectType": "未分类",
@@ -947,7 +947,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_949lkd",
+      "id": "defect_1785135636250_24srqb",
       "date": "2026-07-25",
       "productId": "p_1785130752278_apqq4b",
       "defectType": "未分类",
@@ -956,7 +956,7 @@
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785134318668_4zc69r",
+      "id": "defect_1785135636250_y49331",
       "date": "2026-07-25",
       "productId": "p_1785130752278_apqq4b",
       "defectType": "未分类",
@@ -965,8 +965,8 @@
       "note": "从软件测试.xlsx导入"
     }
   ],
-  "exportTime": "2026-07-27T06:38:59.035Z",
+  "exportTime": "2026-07-27T07:00:44.917Z",
   "version": "1.0",
-  "syncTime": "2026-07-27T06:38:59.035Z",
+  "syncTime": "2026-07-27T07:00:44.917Z",
   "syncBy": "谭绍景"
 }

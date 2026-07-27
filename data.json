@@ -1,7 +1,6 @@
 {
   "products": [
     {
-      "id": "p_em34",
       "name": "EM34静盘",
       "defectTypes": [
         {
@@ -9,7 +8,6 @@
           "descriptions": [
             "型线超差",
             "密封槽尺寸超差",
-            "尺寸超差",
             "板厚超差"
           ]
         },
@@ -31,14 +29,12 @@
             "有台阶",
             "来料不良",
             "变形",
-            "漏坏",
-            "碰伤",
+            "漏坯",
+            "磕伤",
             "压伤",
             "倒角小",
             "氧化",
-            "有毛刺",
-            "漏坯",
-            "磕伤"
+            "有毛刺"
           ]
         },
         {
@@ -48,10 +44,10 @@
             "机器故障、异常"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_5zojjl"
     },
     {
-      "id": "p_esea",
       "name": "ESEA静盘",
       "defectTypes": [
         {
@@ -81,37 +77,33 @@
           "type": "外观不良",
           "descriptions": [
             "氧化",
-            "型线面漏坏",
-            "背面漏坏",
+            "型线面漏坯",
+            "背面漏坯",
             "型线有刀纹",
             "碰伤",
             "来料不良",
             "有台阶",
-            "基准孔倒角偏",
-            "打滑",
-            "背面漏坯",
-            "型线面漏坯"
+            "基准孔倒角偏"
           ]
         },
         {
           "type": "设备原因",
           "descriptions": [
+            "打滑",
             "尺寸跳动",
-            "主轴进渣",
-            "打滑"
+            "主轴进渣"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_39sfwi"
     },
     {
-      "id": "p_ha",
       "name": "HA动盘",
       "defectTypes": [
         {
           "type": "尺寸超差",
           "descriptions": [
             "6毫米孔位置度超差",
-            "尺寸超差",
             "轴承孔超差",
             "外圆超差",
             "型线超差",
@@ -135,7 +127,6 @@
         {
           "type": "外观不良",
           "descriptions": [
-            "外观不良",
             "型线过切",
             "型线有台阶",
             "型线没倒角",
@@ -143,15 +134,13 @@
             "环孔有台阶",
             "对错刀",
             "环孔底部粗糙",
-            "环孔漏坏",
+            "环孔漏坯",
             "夹伤",
             "机械手划伤",
             "碰伤",
-            "漏坏",
-            "来料不良",
-            "氧化",
             "漏坯",
-            "环孔漏坯"
+            "来料不良",
+            "氧化"
           ]
         },
         {
@@ -164,10 +153,10 @@
             "打滑"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_r6zzmn"
     },
     {
-      "id": "p_st",
       "name": "ST动盘",
       "defectTypes": [
         {
@@ -175,7 +164,6 @@
           "descriptions": [
             "6毫米孔位置度超差",
             "有台阶",
-            "尺寸超差",
             "轴承孔超差",
             "外圆超差",
             "型线超差",
@@ -197,7 +185,6 @@
         {
           "type": "外观不良",
           "descriptions": [
-            "外观不良",
             "有台阶",
             "环孔有台阶",
             "刀具碰伤",
@@ -205,15 +192,12 @@
             "型线没倒角",
             "机械手划伤",
             "环孔底部粗糙",
-            "环孔漏坏",
-            "型线漏坏",
+            "环孔漏坯",
+            "型线漏坯",
             "夹伤",
             "碰伤",
-            "漏坏",
-            "来料不良",
-            "型线漏坯",
             "漏坯",
-            "环孔漏坯"
+            "来料不良"
           ]
         },
         {
@@ -222,10 +206,10 @@
             "主轴进渣"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_923rsl"
     },
     {
-      "id": "p_t45j",
       "name": "T45静盘",
       "defectTypes": [
         {
@@ -243,12 +227,10 @@
           "descriptions": [
             "断刀",
             "撞机",
-            "一/二夹装偏",
-            "三夹装偏",
-            "刀撞错了",
-            "调机件",
             "一、二夹装偏",
-            "刀换错了"
+            "三夹装偏",
+            "刀换错了",
+            "调机件"
           ]
         },
         {
@@ -256,9 +238,8 @@
           "descriptions": [
             "来料不良",
             "有台阶",
-            "漏坏",
-            "碰伤",
-            "漏坯"
+            "漏坯",
+            "碰伤"
           ]
         },
         {
@@ -269,10 +250,10 @@
             "夹具偏移"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_9dudse"
     },
     {
-      "id": "p_hthd",
       "name": "HTHB静盘",
       "defectTypes": [
         {
@@ -317,10 +298,10 @@
             "机器故障"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_ne1057"
     },
     {
-      "id": "p_wx",
       "name": "WX静盘",
       "defectTypes": [
         {
@@ -363,17 +344,16 @@
             "机器故障"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_cd59tm"
     },
     {
-      "id": "p_pzk",
       "name": "配重块",
       "defectTypes": [
         {
           "type": "尺寸超差",
           "descriptions": [
-            "板厚超差",
-            "尺寸超差"
+            "板厚超差"
           ]
         },
         {
@@ -391,7 +371,6 @@
             "氧化",
             "夹伤",
             "碰伤",
-            "漏坏",
             "漏坯"
           ]
         },
@@ -401,10 +380,10 @@
             "工装偏了"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_9g9xqa"
     },
     {
-      "id": "p_t45d",
       "name": "T45动盘",
       "defectTypes": [
         {
@@ -413,7 +392,6 @@
             "轴承孔大",
             "键槽超差",
             "环孔超差",
-            "尺寸超差",
             "型线密封槽超差",
             "调机件",
             "型线超差"
@@ -422,8 +400,6 @@
         {
           "type": "人为操作",
           "descriptions": [
-            "调机件",
-            "型线超差",
             "断刀",
             "一夹装偏",
             "二夹装偏",
@@ -434,9 +410,8 @@
           "type": "外观不良",
           "descriptions": [
             "来料不良",
-            "漏坏",
-            "碰伤",
-            "漏坯"
+            "漏坯",
+            "碰伤"
           ]
         },
         {
@@ -445,1500 +420,1510 @@
             "机器故障"
           ]
         }
-      ]
+      ],
+      "id": "p_1785130752278_apqq4b"
     }
   ],
   "production": [
     {
-      "id": "prod_1785148926316_xqy097",
+      "id": "prod_1785149725315_z1f5i3",
       "date": "2026-07-20",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 530
     },
     {
-      "id": "prod_1785148926316_9e08od",
+      "id": "prod_1785149725315_6lp4lo",
       "date": "2026-07-20",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "quantity": 260
     },
     {
-      "id": "prod_1785148926316_zmfd80",
+      "id": "prod_1785149725315_hhwoad",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 1625
     },
     {
-      "id": "prod_1785148926316_c4e2o1",
+      "id": "prod_1785149725315_424p2b",
       "date": "2026-07-20",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 662
     },
     {
-      "id": "prod_1785148926316_6ntfng",
+      "id": "prod_1785149725315_89cxj1",
       "date": "2026-07-20",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 460
     },
     {
-      "id": "prod_1785148926316_22aqap",
+      "id": "prod_1785149725315_5zb3xk",
       "date": "2026-07-20",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1700
     },
     {
-      "id": "prod_1785148926316_4ph84r",
+      "id": "prod_1785149725315_9g9w95",
       "date": "2026-07-20",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "quantity": 180
     },
     {
-      "id": "prod_1785148926316_ys4f80",
+      "id": "prod_1785149725315_pbh823",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 545
     },
     {
-      "id": "prod_1785148926316_b1f8rr",
+      "id": "prod_1785149725315_bjxpws",
       "date": "2026-07-21",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "quantity": 260
     },
     {
-      "id": "prod_1785148926316_t14xee",
+      "id": "prod_1785149725315_t1eu51",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 1996
     },
     {
-      "id": "prod_1785148926316_7r2yaa",
+      "id": "prod_1785149725315_kbzyzr",
       "date": "2026-07-21",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 613
     },
     {
-      "id": "prod_1785148926316_pg547m",
+      "id": "prod_1785149725315_owk1pj",
       "date": "2026-07-21",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 444
     },
     {
-      "id": "prod_1785148926316_yadqf1",
+      "id": "prod_1785149725315_6if7vh",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1716
     },
     {
-      "id": "prod_1785148926316_l7kq3r",
+      "id": "prod_1785149725315_0toa3h",
       "date": "2026-07-21",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "quantity": 184
     },
     {
-      "id": "prod_1785148926316_b71rqg",
+      "id": "prod_1785149725315_go6cbc",
       "date": "2026-07-22",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 534
     },
     {
-      "id": "prod_1785148926316_rzo3wg",
+      "id": "prod_1785149725315_x6kgkn",
       "date": "2026-07-22",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "quantity": 260
     },
     {
-      "id": "prod_1785148926316_7vma40",
+      "id": "prod_1785149725315_y36ui7",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 618
     },
     {
-      "id": "prod_1785148926316_gtz2oc",
+      "id": "prod_1785149725315_k9g4k8",
       "date": "2026-07-22",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 662
     },
     {
-      "id": "prod_1785148926316_dxynd8",
+      "id": "prod_1785149725315_3ekc92",
       "date": "2026-07-22",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 612
     },
     {
-      "id": "prod_1785148926316_2wpag3",
+      "id": "prod_1785149725315_dtydno",
       "date": "2026-07-22",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1644
     },
     {
-      "id": "prod_1785148926316_pr8zjc",
+      "id": "prod_1785149725315_f2upbe",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "quantity": 104
     },
     {
-      "id": "prod_1785148926316_v1thih",
+      "id": "prod_1785149725315_xka2fk",
       "date": "2026-07-23",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 686
     },
     {
-      "id": "prod_1785148926316_crk9r1",
+      "id": "prod_1785149725315_nrkb6l",
       "date": "2026-07-23",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 1880
     },
     {
-      "id": "prod_1785148926316_axf7u3",
+      "id": "prod_1785149725315_igxvim",
       "date": "2026-07-23",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 865
     },
     {
-      "id": "prod_1785148926316_42laop",
+      "id": "prod_1785149725315_oni4lc",
       "date": "2026-07-23",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 464
     },
     {
-      "id": "prod_1785148926316_sz8b8t",
+      "id": "prod_1785149725315_ofx3pd",
       "date": "2026-07-23",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1716
     },
     {
-      "id": "prod_1785148926316_8v3sqm",
+      "id": "prod_1785149725315_kus714",
       "date": "2026-07-24",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 580
     },
     {
-      "id": "prod_1785148926316_1o881m",
+      "id": "prod_1785149725315_zy6dtk",
       "date": "2026-07-24",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "quantity": 120
     },
     {
-      "id": "prod_1785148926316_vllsu3",
+      "id": "prod_1785149725315_6tmz4l",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 2217
     },
     {
-      "id": "prod_1785148926316_m3944w",
+      "id": "prod_1785149725315_i8wiob",
       "date": "2026-07-24",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 200
     },
     {
-      "id": "prod_1785148926316_qarb9b",
+      "id": "prod_1785149725315_wleigp",
       "date": "2026-07-24",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 540
     },
     {
-      "id": "prod_1785148926316_d5hesu",
+      "id": "prod_1785149725315_brwjvh",
       "date": "2026-07-24",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1836
     },
     {
-      "id": "prod_1785148926316_kedhff",
+      "id": "prod_1785149725315_rpzr1d",
       "date": "2026-07-25",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "quantity": 499
     },
     {
-      "id": "prod_1785148926316_8et24d",
+      "id": "prod_1785149725315_7tgmr3",
       "date": "2026-07-25",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "quantity": 230
     },
     {
-      "id": "prod_1785148926316_5ukc3a",
+      "id": "prod_1785149725315_cv0wjs",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "quantity": 1763
     },
     {
-      "id": "prod_1785148926316_su6y4p",
+      "id": "prod_1785149725315_xdf921",
       "date": "2026-07-25",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "quantity": 379
     },
     {
-      "id": "prod_1785148926316_cq0y9c",
+      "id": "prod_1785149725315_p6ekbk",
       "date": "2026-07-25",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "quantity": 599
     },
     {
-      "id": "prod_1785148926316_nan5b3",
+      "id": "prod_1785149725315_ygmped",
       "date": "2026-07-25",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "quantity": 1748
     },
     {
-      "id": "prod_1785148926316_cggfnh",
+      "id": "prod_1785149725315_k1tr9r",
       "date": "2026-07-25",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "quantity": 64
     }
   ],
   "defects": [
     {
-      "id": "defect_1785148926316_166hvx",
+      "date": "2026-07-27",
+      "productId": "p_esea",
+      "defectType": "人为操作",
+      "defectDesc": "二夹装偏",
+      "quantity": 111,
+      "note": "",
+      "id": "defect_1785142881587"
+    },
+    {
+      "id": "defect_1785149725315_w9e95l",
       "date": "2026-07-20",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "尺寸超差",
       "defectDesc": "板厚超差",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_mxl034",
+      "id": "defect_1785149725315_uu5t1v",
       "date": "2026-07-20",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ns2xrd",
+      "id": "defect_1785149725315_7xg9uw",
       "date": "2026-07-20",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "外观不良",
       "defectDesc": "变形",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_68w05n",
+      "id": "defect_1785149725315_wxkcdq",
       "date": "2026-07-20",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_06o595",
+      "id": "defect_1785149725315_hk7yve",
       "date": "2026-07-20",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "外观不良",
       "defectDesc": "背面漏坯",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_hl9wc6",
+      "id": "defect_1785149725315_gxzr13",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "尺寸超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_blgtgj",
+      "id": "defect_1785149725315_om8ldh",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_urmsnf",
+      "id": "defect_1785149725315_zjdvqy",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_v4fr1j",
+      "id": "defect_1785149725315_qy2bye",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线有台阶",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_02lesq",
+      "id": "defect_1785149725315_rzkh3f",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "环孔漏坯",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_tzrebo",
+      "id": "defect_1785149725315_ob4qrq",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "夹伤",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_6baxnf",
+      "id": "defect_1785149725315_73riq7",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "机械手划伤",
       "quantity": 6,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_gdadou",
+      "id": "defect_1785149725315_7ws5sy",
       "date": "2026-07-20",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_721g0r",
+      "id": "defect_1785149725315_6mgie3",
       "date": "2026-07-20",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_n7kwrp",
+      "id": "defect_1785149725315_322fw3",
       "date": "2026-07-20",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_2ypkol",
+      "id": "defect_1785149725315_y0hkml",
       "date": "2026-07-20",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "机械手划伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_1l9013",
+      "id": "defect_1785149725315_amccth",
       "date": "2026-07-20",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "夹伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8nm4iu",
+      "id": "defect_1785149725315_7ge5tv",
       "date": "2026-07-20",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "尺寸超差",
       "defectDesc": "位置度超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_j53j81",
+      "id": "defect_1785149725315_8ny98o",
       "date": "2026-07-20",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_je5tdb",
+      "id": "defect_1785149725315_si8bmf",
       "date": "2026-07-20",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "尺寸超差",
       "defectDesc": "位置度超差",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_4qyx4x",
+      "id": "defect_1785149725315_el1dkq",
       "date": "2026-07-20",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "换刀后未对刀",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_x96mm0",
+      "id": "defect_1785149725315_lzhkz9",
       "date": "2026-07-20",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_qq8u8c",
+      "id": "defect_1785149725315_bn4r6t",
       "date": "2026-07-20",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_iesr70",
+      "id": "defect_1785149725315_h22o5i",
       "date": "2026-07-20",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ou60lg",
+      "id": "defect_1785149725315_1hu84h",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "尺寸超差",
       "defectDesc": "尺寸超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_3rsdqe",
+      "id": "defect_1785149725315_6i6pqr",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "尺寸超差",
       "defectDesc": "板厚超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_o7e1yx",
+      "id": "defect_1785149725315_5zzcdl",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_fyrpra",
+      "id": "defect_1785149725315_nv8nb5",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "外观不良",
       "defectDesc": "有台阶",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_xhtyu8",
+      "id": "defect_1785149725315_mmta9i",
       "date": "2026-07-21",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "外观不良",
       "defectDesc": "变形",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_nbza2g",
+      "id": "defect_1785149725315_6tl180",
       "date": "2026-07-21",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_uhuyhk",
+      "id": "defect_1785149725315_kvr9v9",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "外圆超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_0nk3j3",
+      "id": "defect_1785149725315_ppacj6",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "型线超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_apbfqq",
+      "id": "defect_1785149725315_ifcmkc",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "调机件",
       "quantity": 5,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_l49qol",
+      "id": "defect_1785149725315_v972bc",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 9,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_xx9z0b",
+      "id": "defect_1785149725315_94nftl",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_wrbjcw",
+      "id": "defect_1785149725315_uv7scm",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_6nvdvb",
+      "id": "defect_1785149725315_pjgefh",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_sjknn6",
+      "id": "defect_1785149725315_hr1fik",
       "date": "2026-07-21",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_2igif0",
+      "id": "defect_1785149725315_6lu516",
       "date": "2026-07-21",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_bfch6n",
+      "id": "defect_1785149725315_ort0jx",
       "date": "2026-07-21",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "打码不良",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_01lwln",
+      "id": "defect_1785149725315_y5pd6f",
       "date": "2026-07-21",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "刀具碰伤",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_oel7ge",
+      "id": "defect_1785149725315_klwj82",
       "date": "2026-07-21",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "机械手划伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_rgz3wd",
+      "id": "defect_1785149725315_xmjrlt",
       "date": "2026-07-21",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_0819mr",
+      "id": "defect_1785149725315_tcwiua",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "调机件",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_0ros11",
+      "id": "defect_1785149725315_rin2uf",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_hehk95",
+      "id": "defect_1785149725315_xozg1u",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ahah4y",
+      "id": "defect_1785149725315_5w21kn",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_3ugufo",
+      "id": "defect_1785149725315_1ogjxp",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "有台阶",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_7szsf0",
+      "id": "defect_1785149725315_ilzc26",
       "date": "2026-07-21",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_xtpy5d",
+      "id": "defect_1785149725315_324i3d",
       "date": "2026-07-21",
-      "productId": "p_pzk",
+      "productId": "p_1785130752278_9g9xqa",
       "defectType": "人为操作",
       "defectDesc": "装夹不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_urswj3",
+      "id": "defect_1785149725315_at2gvv",
       "date": "2026-07-21",
-      "productId": "p_pzk",
+      "productId": "p_1785130752278_9g9xqa",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_wg7r68",
+      "id": "defect_1785149725315_r1jbd6",
       "date": "2026-07-21",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_9zwusg",
+      "id": "defect_1785149725315_oa5n7d",
       "date": "2026-07-21",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_xn2qxa",
+      "id": "defect_1785149725315_piknnh",
       "date": "2026-07-22",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "尺寸超差",
       "defectDesc": "板厚超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_nj5lid",
+      "id": "defect_1785149725315_2q0lfm",
       "date": "2026-07-22",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_5p2mmx",
+      "id": "defect_1785149725315_axvsxn",
       "date": "2026-07-22",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_hi97gb",
+      "id": "defect_1785149725315_btxwti",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "轴承孔超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_2q6hkh",
+      "id": "defect_1785149725315_zny0k2",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_41b0hk",
+      "id": "defect_1785149725315_1z65ka",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线有台阶",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_qfumor",
+      "id": "defect_1785149725315_vwjb27",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "机械手划伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_5s0ccz",
+      "id": "defect_1785149725315_fgzy2z",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_pijgvr",
+      "id": "defect_1785149725315_hx7e3s",
       "date": "2026-07-22",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ag5x7u",
+      "id": "defect_1785149725315_9v1unn",
       "date": "2026-07-22",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_fjbdhc",
+      "id": "defect_1785149725315_mx4ofr",
       "date": "2026-07-22",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "机械手划伤",
       "quantity": 5,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_iayj5d",
+      "id": "defect_1785149725315_p9tjku",
       "date": "2026-07-22",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_qwt1li",
+      "id": "defect_1785149725315_t1g6jd",
       "date": "2026-07-22",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_m1p7p8",
+      "id": "defect_1785149725315_p90aon",
       "date": "2026-07-22",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 8,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_p4hn8d",
+      "id": "defect_1785149725315_b01vk6",
       "date": "2026-07-22",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_rh3xsl",
+      "id": "defect_1785149725315_4ifqet",
       "date": "2026-07-22",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_zbooyu",
+      "id": "defect_1785149725315_uhzqb5",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "尺寸超差",
       "defectDesc": "调机件",
       "quantity": 12,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_cliseh",
+      "id": "defect_1785149725315_pxgc3t",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "尺寸超差",
       "defectDesc": "型线超差",
       "quantity": 8,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_feax04",
+      "id": "defect_1785149725315_zd3pup",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_grjx30",
+      "id": "defect_1785149725315_1d5gay",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "外观不良",
       "defectDesc": "漏坯",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_hxkain",
+      "id": "defect_1785149725315_mklr9r",
       "date": "2026-07-22",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_w43gc9",
+      "id": "defect_1785149725315_wigg2i",
       "date": "2026-07-23",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "外观不良",
       "defectDesc": "磕伤",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_3ai1nx",
+      "id": "defect_1785149725315_c57zis",
       "date": "2026-07-23",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "轴承孔超差",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_vuw99i",
+      "id": "defect_1785149725315_s5t5t5",
       "date": "2026-07-23",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线有台阶",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_0hu127",
+      "id": "defect_1785149725315_ba60gt",
       "date": "2026-07-23",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8xgbht",
+      "id": "defect_1785149725315_egefo3",
       "date": "2026-07-23",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 5,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_80gqpx",
+      "id": "defect_1785149725315_sp4ho9",
       "date": "2026-07-23",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_lsb96a",
+      "id": "defect_1785149725315_gjkebx",
       "date": "2026-07-23",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "夹伤",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_zzkxnt",
+      "id": "defect_1785149725315_z3dik8",
       "date": "2026-07-23",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "尺寸超差",
       "defectDesc": "位置度超差",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_1pw4r3",
+      "id": "defect_1785149725315_8f1yq6",
       "date": "2026-07-23",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_sbragd",
+      "id": "defect_1785149725315_kymdbi",
       "date": "2026-07-23",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "设备原因",
       "defectDesc": "电源跳闸",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_fsbjve",
+      "id": "defect_1785149725315_qzvcmh",
       "date": "2026-07-23",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "尺寸超差",
       "defectDesc": "位置度超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_59mubd",
+      "id": "defect_1785149725315_6dq77e",
       "date": "2026-07-23",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 12,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_h5xwhz",
+      "id": "defect_1785149725315_drn634",
       "date": "2026-07-23",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8kxw9k",
+      "id": "defect_1785149725315_0y8ypy",
       "date": "2026-07-23",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "设备原因",
       "defectDesc": "主轴进渣",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_guramn",
+      "id": "defect_1785149725315_7myiez",
       "date": "2026-07-24",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "尺寸超差",
       "defectDesc": "板厚超差",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_k3o7jh",
+      "id": "defect_1785149725315_bg6kqn",
       "date": "2026-07-24",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_td6n5d",
+      "id": "defect_1785149725315_wvlwmj",
       "date": "2026-07-24",
-      "productId": "p_em34",
+      "productId": "p_1785130752278_5zojjl",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_phr6hq",
+      "id": "defect_1785149725315_18p52o",
       "date": "2026-07-24",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_remgpg",
+      "id": "defect_1785149725315_vo9ykp",
       "date": "2026-07-24",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
       "defectDesc": "调机件",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_lwnekr",
+      "id": "defect_1785149725315_keijr8",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "轴承孔超差",
       "quantity": 7,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_pgzss4",
+      "id": "defect_1785149725315_jyhxg3",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "调机件",
       "quantity": 7,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_i0p4cu",
+      "id": "defect_1785149725315_zc3r1v",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_xgjdvl",
+      "id": "defect_1785149725315_ruotli",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 14,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_7xd9zy",
+      "id": "defect_1785149725315_gukswr",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_4vdcxr",
+      "id": "defect_1785149725315_apqbtz",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "环孔位置度超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_47wm1r",
+      "id": "defect_1785149725315_3qarc1",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线有台阶",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_q5a0sp",
+      "id": "defect_1785149725315_s3vf73",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_9bnfly",
+      "id": "defect_1785149725315_gymhhw",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "夹伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_5tcvse",
+      "id": "defect_1785149725315_yn7pcf",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 11,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8ou4jt",
+      "id": "defect_1785149725315_g6v4sd",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_q209nb",
+      "id": "defect_1785149725315_spuegg",
       "date": "2026-07-24",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "设备原因",
       "defectDesc": "主轴进渣",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_tc467x",
+      "id": "defect_1785149725315_bz73h4",
       "date": "2026-07-24",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ujycde",
+      "id": "defect_1785149725315_61lm0g",
       "date": "2026-07-24",
-      "productId": "p_st",
+      "productId": "p_1785130752278_923rsl",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_qohsit",
+      "id": "defect_1785149725315_6lgvs1",
       "date": "2026-07-24",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_kajyv3",
+      "id": "defect_1785149725315_buls8r",
       "date": "2026-07-24",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_rsg5rk",
+      "id": "defect_1785149725315_ssyypn",
       "date": "2026-07-24",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "设备原因",
       "defectDesc": "主轴进渣",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_qzdi2i",
+      "id": "defect_1785149725315_9wdhwb",
       "date": "2026-07-24",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "刀损",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_gidgfa",
+      "id": "defect_1785149725315_dh6ukz",
       "date": "2026-07-24",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8itgod",
+      "id": "defect_1785149725315_jmzsci",
       "date": "2026-07-24",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 7,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_z2571t",
+      "id": "defect_1785149725315_onxd7c",
       "date": "2026-07-24",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_licfr7",
+      "id": "defect_1785149725315_nrha6t",
       "date": "2026-07-24",
-      "productId": "p_pzk",
+      "productId": "p_1785130752278_9g9xqa",
       "defectType": "人为操作",
       "defectDesc": "装夹不良",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_tyg551",
+      "id": "defect_1785149725315_crs8r3",
       "date": "2026-07-24",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_1v4sbg",
+      "id": "defect_1785149725315_g87prp",
       "date": "2026-07-25",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_2bz6em",
+      "id": "defect_1785149725315_hx1ylh",
       "date": "2026-07-25",
-      "productId": "p_esea",
+      "productId": "p_1785130752278_39sfwi",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_vg8h67",
+      "id": "defect_1785149725315_9ilruv",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "尺寸超差",
       "defectDesc": "尺寸超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_knw2ft",
+      "id": "defect_1785149725315_ynkq6b",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "调机件",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_eruqnk",
+      "id": "defect_1785149725315_zgpu2l",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_j90xi7",
+      "id": "defect_1785149725315_q4ipq3",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_4s2lvf",
+      "id": "defect_1785149725315_r4r3ng",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "二夹装偏",
       "quantity": 18,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_gk5nlb",
+      "id": "defect_1785149725315_vmkf72",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_fms42u",
+      "id": "defect_1785149725315_r50y4f",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线有台阶",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_4jp7j4",
+      "id": "defect_1785149725315_4ohs3c",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_voz84x",
+      "id": "defect_1785149725315_swth11",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_cwvyns",
+      "id": "defect_1785149725315_cl5vcc",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "外观不良",
       "defectDesc": "来料不良",
       "quantity": 9,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_v0rthx",
+      "id": "defect_1785149725315_5n5qpl",
       "date": "2026-07-25",
-      "productId": "p_ha",
+      "productId": "p_1785130752278_r6zzmn",
       "defectType": "设备原因",
       "defectDesc": "主轴进渣",
       "quantity": 12,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_beahzc",
+      "id": "defect_1785149725315_348ugh",
       "date": "2026-07-25",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "尺寸超差",
       "defectDesc": "位置度超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_i16k2s",
+      "id": "defect_1785149725315_msloiy",
       "date": "2026-07-25",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "断刀",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_opww40",
+      "id": "defect_1785149725315_gso87x",
       "date": "2026-07-25",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_vlc9g0",
+      "id": "defect_1785149725315_ravwj4",
       "date": "2026-07-25",
-      "productId": "p_t45j",
+      "productId": "p_1785130752278_9dudse",
       "defectType": "人为操作",
       "defectDesc": "三夹装偏",
       "quantity": 2,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_tlvfqn",
+      "id": "defect_1785149725315_3gvnvj",
       "date": "2026-07-25",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "尺寸超差",
       "defectDesc": "孔大",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_govbk8",
+      "id": "defect_1785149725315_mwon5p",
       "date": "2026-07-25",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "人为操作",
       "defectDesc": "一、二夹装偏",
       "quantity": 4,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ks17ny",
+      "id": "defect_1785149725315_06wmua",
       "date": "2026-07-25",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "型线没倒角",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_8e85y4",
+      "id": "defect_1785149725315_ll86c9",
       "date": "2026-07-25",
-      "productId": "p_hthd",
+      "productId": "p_1785130752278_ne1057",
       "defectType": "外观不良",
       "defectDesc": "碰伤",
       "quantity": 3,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_bnjbfz",
+      "id": "defect_1785149725315_4bs0er",
       "date": "2026-07-25",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "尺寸超差",
       "defectDesc": "型线超差",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     },
     {
-      "id": "defect_1785148926316_ywuga3",
+      "id": "defect_1785149725315_wrmos9",
       "date": "2026-07-25",
-      "productId": "p_t45d",
+      "productId": "p_1785130752278_apqq4b",
       "defectType": "人为操作",
       "defectDesc": "一夹装偏",
       "quantity": 1,
       "note": "从软件测试.xlsx导入"
     }
   ],
-  "exportTime": "2026-07-27T10:44:53.179Z",
+  "exportTime": "2026-07-27T10:55:33.984Z",
   "version": "1.0",
-  "syncTime": "2026-07-27T10:44:53.179Z",
+  "syncTime": "2026-07-27T10:55:33.984Z",
   "syncBy": "谭绍景"
 }

@@ -1,0 +1,729 @@
+{
+  "products": [
+    {
+      "name": "EM34静盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "型线超差",
+            "密封槽尺寸超差",
+            "板厚超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "调机件",
+            "一夹装偏",
+            "二夹装偏",
+            "三夹装偏",
+            "撞机",
+            "断刀"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "孔内有台阶",
+            "有台阶",
+            "来料不良",
+            "变形",
+            "漏坯",
+            "磕伤",
+            "压伤",
+            "倒角小",
+            "氧化",
+            "有毛刺"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "气密报警",
+            "机器故障、异常"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_tdn48o"
+    },
+    {
+      "name": "ESEA静盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "轴承孔超差",
+            "位置度超差",
+            "型线面键槽超差",
+            "板厚超差",
+            "型线面5毫米孔超差",
+            "同心度超差",
+            "圆柱度超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "一夹装偏",
+            "二夹装偏",
+            "三夹装偏",
+            "调机件",
+            "打码不良",
+            "断刀"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "氧化",
+            "型线面漏坯",
+            "背面漏坯",
+            "型线有刀纹",
+            "碰伤",
+            "来料不良",
+            "有台阶",
+            "基准孔倒角偏"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "打滑",
+            "尺寸跳动",
+            "主轴进渣"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_djm7jz"
+    },
+    {
+      "name": "HA动盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "6毫米孔位置度超差",
+            "轴承孔超差",
+            "外圆超差",
+            "型线超差",
+            "密封槽尺寸超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "调机件",
+            "断刀",
+            "一夹装偏",
+            "二夹装偏",
+            "三夹装偏",
+            "环孔位置度超差",
+            "打码不良",
+            "混料",
+            "二次装夹"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "型线过切",
+            "型线有台阶",
+            "型线没倒角",
+            "背面有台阶",
+            "环孔有台阶",
+            "对错刀",
+            "环孔底部粗糙",
+            "环孔漏坯",
+            "夹伤",
+            "机械手划伤",
+            "碰伤",
+            "漏坯",
+            "来料不良",
+            "氧化"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "机器故障",
+            "主轴进渣",
+            "机械手夹歪",
+            "刀具变动",
+            "打滑"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_a97199"
+    },
+    {
+      "name": "ST动盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "6毫米孔位置度超差",
+            "有台阶",
+            "轴承孔超差",
+            "外圆超差",
+            "型线超差",
+            "密封槽尺寸超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "调机件",
+            "断刀",
+            "一夹装偏",
+            "二夹装偏",
+            "三夹装偏",
+            "打码不良",
+            "混料"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "有台阶",
+            "环孔有台阶",
+            "刀具碰伤",
+            "对错刀",
+            "型线没倒角",
+            "机械手划伤",
+            "环孔底部粗糙",
+            "环孔漏坯",
+            "型线漏坯",
+            "夹伤",
+            "碰伤",
+            "漏坯",
+            "来料不良"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "主轴进渣"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_uut8p2"
+    },
+    {
+      "name": "T45静盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "密封槽尺寸超差",
+            "6.3孔偏",
+            "尺寸不良",
+            "板厚不良",
+            "位置度超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "断刀",
+            "撞机",
+            "一、二夹装偏",
+            "三夹装偏",
+            "刀换错了",
+            "调机件"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "来料不良",
+            "有台阶",
+            "漏坯",
+            "碰伤"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "主轴进渣",
+            "电源跳闸",
+            "夹具偏移"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_km7137"
+    },
+    {
+      "name": "HTHB静盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "6.3孔偏",
+            "板厚不良",
+            "位置度超差",
+            "孔大",
+            "密封槽尺寸超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "刀损",
+            "撞机",
+            "调机件",
+            "换刀后未对刀",
+            "返修报废",
+            "断刀",
+            "一、二夹装偏",
+            "三夹装偏"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "来料不良",
+            "型线没倒角",
+            "有台阶",
+            "漏坯",
+            "碰伤"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "夹具不良",
+            "主轴进渣",
+            "掉刀",
+            "机器故障"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_z5zfv6"
+    },
+    {
+      "name": "WX静盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "6.3孔偏",
+            "板厚不良",
+            "位置度超差",
+            "孔大",
+            "密封槽尺寸超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "刀损",
+            "撞机",
+            "调机件",
+            "返修报废",
+            "断刀",
+            "一、二夹装偏",
+            "三夹装偏"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "来料不良",
+            "型线没倒角",
+            "有台阶",
+            "漏坯",
+            "碰伤"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "夹具不良",
+            "主轴进渣",
+            "机器故障"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_2xznmj"
+    },
+    {
+      "name": "配重块",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "板厚超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "装夹不良",
+            "调机件"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "来料不良",
+            "有台阶",
+            "氧化",
+            "夹伤",
+            "碰伤",
+            "漏坯"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "工装偏了"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_psgifa"
+    },
+    {
+      "name": "T45动盘",
+      "defectTypes": [
+        {
+          "type": "尺寸超差",
+          "descriptions": [
+            "轴承孔大",
+            "键槽超差",
+            "环孔超差",
+            "型线密封槽超差",
+            "调机件",
+            "型线超差"
+          ]
+        },
+        {
+          "type": "人为操作",
+          "descriptions": [
+            "断刀",
+            "一夹装偏",
+            "二夹装偏",
+            "三夹装偏"
+          ]
+        },
+        {
+          "type": "外观不良",
+          "descriptions": [
+            "来料不良",
+            "漏坯",
+            "碰伤"
+          ]
+        },
+        {
+          "type": "设备原因",
+          "descriptions": [
+            "机器故障"
+          ]
+        }
+      ],
+      "id": "p_1785129106873_fg1x7k"
+    }
+  ],
+  "production": [
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_tdn48o",
+      "quantity": 580,
+      "id": "prod_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_djm7jz",
+      "quantity": 120,
+      "id": "prod_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "quantity": 2217,
+      "id": "prod_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_uut8p2",
+      "quantity": 200,
+      "id": "prod_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_km7137",
+      "quantity": 540,
+      "id": "prod_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_z5zfv6",
+      "quantity": 1836,
+      "id": "prod_1785129106878"
+    },
+    {
+      "date": "2026-07-27",
+      "productId": "p_1785129106873_psgifa",
+      "quantity": 111,
+      "id": "prod_1785130487072"
+    }
+  ],
+  "defects": [
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_tdn48o",
+      "defectType": "尺寸超差",
+      "defectDesc": "板厚超差",
+      "quantity": 2,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_tdn48o",
+      "defectType": "人为操作",
+      "defectDesc": "二夹装偏",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_tdn48o",
+      "defectType": "人为操作",
+      "defectDesc": "断刀",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_djm7jz",
+      "defectType": "人为操作",
+      "defectDesc": "一夹装偏",
+      "quantity": 3,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_djm7jz",
+      "defectType": "人为操作",
+      "defectDesc": "调机件",
+      "quantity": 4,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "尺寸超差",
+      "defectDesc": "轴承孔超差",
+      "quantity": 7,
+      "note": "从Excel导入",
+      "id": "defect_1785129106873"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "人为操作",
+      "defectDesc": "调机件",
+      "quantity": 7,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "人为操作",
+      "defectDesc": "一夹装偏",
+      "quantity": 3,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "人为操作",
+      "defectDesc": "二夹装偏",
+      "quantity": 14,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "人为操作",
+      "defectDesc": "三夹装偏",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "人为操作",
+      "defectDesc": "环孔位置度超差",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "外观不良",
+      "defectDesc": "型线有台阶",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "外观不良",
+      "defectDesc": "型线没倒角",
+      "quantity": 2,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "外观不良",
+      "defectDesc": "夹伤",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "外观不良",
+      "defectDesc": "碰伤",
+      "quantity": 11,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "外观不良",
+      "defectDesc": "来料不良",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_a97199",
+      "defectType": "设备原因",
+      "defectDesc": "主轴进渣",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_uut8p2",
+      "defectType": "人为操作",
+      "defectDesc": "断刀",
+      "quantity": 3,
+      "note": "从Excel导入",
+      "id": "defect_1785129106874"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_uut8p2",
+      "defectType": "外观不良",
+      "defectDesc": "碰伤",
+      "quantity": 3,
+      "note": "从Excel导入",
+      "id": "defect_1785129106875"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_km7137",
+      "defectType": "人为操作",
+      "defectDesc": "一、二夹装偏",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106875"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_km7137",
+      "defectType": "人为操作",
+      "defectDesc": "三夹装偏",
+      "quantity": 2,
+      "note": "从Excel导入",
+      "id": "defect_1785129106875"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_km7137",
+      "defectType": "设备原因",
+      "defectDesc": "主轴进渣",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106875"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_z5zfv6",
+      "defectType": "人为操作",
+      "defectDesc": "刀损",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106875"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_z5zfv6",
+      "defectType": "人为操作",
+      "defectDesc": "断刀",
+      "quantity": 3,
+      "note": "从Excel导入",
+      "id": "defect_1785129106876"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_z5zfv6",
+      "defectType": "人为操作",
+      "defectDesc": "一、二夹装偏",
+      "quantity": 7,
+      "note": "从Excel导入",
+      "id": "defect_1785129106876"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_z5zfv6",
+      "defectType": "外观不良",
+      "defectDesc": "碰伤",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106876"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_psgifa",
+      "defectType": "人为操作",
+      "defectDesc": "装夹不良",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106877"
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_fg1x7k",
+      "defectType": "人为操作",
+      "defectDesc": "一夹装偏",
+      "quantity": 1,
+      "note": "从Excel导入",
+      "id": "defect_1785129106877"
+    }
+  ],
+  "exportTime": "2026-07-27T05:34:55.225Z",
+  "version": "1.0",
+  "syncTime": "2026-07-27T05:34:55.225Z",
+  "syncBy": "谭绍景"
+}

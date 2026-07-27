@@ -465,6 +465,12 @@
       "date": "2026-07-27",
       "productId": "p_1785129106873_psgifa",
       "quantity": 11
+    },
+    {
+      "date": "2026-07-24",
+      "productId": "p_1785129106873_psgifa",
+      "quantity": 111,
+      "id": "prod_1785130645400"
     }
   ],
   "defects": [
@@ -721,8 +727,8 @@
       "id": "defect_1785129106877"
     }
   ],
-  "exportTime": "2026-07-27T05:37:18.139Z",
+  "exportTime": "2026-07-27T05:37:30.885Z",
   "version": "1.0",
-  "syncTime": "2026-07-27T05:37:18.139Z",
+  "syncTime": "2026-07-27T05:37:30.885Z",
   "syncBy": "谭绍景"
 }

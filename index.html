@@ -535,7 +535,7 @@
       <!-- 图表区域 -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">近7天不良率趋势</h3>
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">近30天不良率趋势</h3>
           <div class="chart-container">
             <canvas id="chart-trend"></canvas>
           </div>
@@ -849,13 +849,14 @@
                 <th>产品</th>
                 <th>产量</th>
                 <th>报废数</th>
+                <th>最多不良描述</th>
                 <th>不良率</th>
                 <th>等级</th>
               </tr>
             </thead>
             <tbody id="report-body">
               <tr>
-                <td colspan="6" class="text-center text-gray-500 py-8">请选择条件生成报表</td>
+                <td colspan="7" class="text-center text-gray-500 py-8">请选择条件生成报表</td>
               </tr>
             </tbody>
           </table>
@@ -1182,6 +1183,12 @@ const Utils = {
 
   // 安全解析本地日期（兼容移动端 Safari）
   parseLocalDate(dateStr) {
+    if (dateStr instanceof Date) {
+      return new Date(dateStr.getFullYear(), dateStr.getMonth(), dateStr.getDate());
+    }
+    if (typeof dateStr !== 'string') {
+      throw new Error('parseLocalDate expects string or Date, got ' + typeof dateStr);
+    }
     const [year, month, day] = dateStr.split('-').map(Number);
     return new Date(year, month - 1, day);
   },
@@ -2478,7 +2485,33 @@ const Dashboard = {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            afterDraw: (chart) => {
+              const ctx = chart.ctx;
+              const prodQtys = chart._prodQtys || [];
+              chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((bar, index) => {
+                  const value = dataset.data[index];
+                  const prod = prodQtys[index] || 0;
+                  if (value > 0) {
+                    ctx.fillStyle = '#374151';
+                    ctx.font = 'bold 11px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    const text = value + '个';
+                    ctx.fillText(text, bar.x, bar.y - 2);
+                    if (prod > 0) {
+                      ctx.font = '10px sans-serif';
+                      ctx.fillStyle = '#6b7280';
+                      ctx.fillText('产' + prod, bar.x, bar.y - 14);
+                    }
+                  }
+                });
+              });
+            }
+          },
           scales: { y: { beginAtZero: true } }
         }
       });
@@ -2494,7 +2527,31 @@ const Dashboard = {
           responsive: true,
           maintainAspectRatio: false,
           indexAxis: 'y',
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            afterDraw: (chart) => {
+              const ctx = chart.ctx;
+              const prodQtys = chart._prodQtys || [];
+              chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((bar, index) => {
+                  const value = dataset.data[index];
+                  const prod = prodQtys[index] || 0;
+                  ctx.fillStyle = '#374151';
+                  ctx.font = 'bold 11px sans-serif';
+                  ctx.textAlign = 'left';
+                  ctx.textBaseline = 'middle';
+                  const text = value.toFixed(2) + '%';
+                  ctx.fillText(text, bar.x + 4, bar.y);
+                  if (prod > 0) {
+                    ctx.font = '10px sans-serif';
+                    ctx.fillStyle = '#6b7280';
+                    ctx.fillText('产' + prod, bar.x + 4 + ctx.measureText(text).width + 6, bar.y);
+                  }
+                });
+              });
+            }
+          },
           scales: { x: { ticks: { callback: v => v + '%' } } }
         }
       });
@@ -3095,7 +3152,7 @@ const Dashboard = {
   },
 
   updateTrendChart(products, productionRecords, defectRecords) {
-    const dates = Utils.getRecentDays(7, 1);
+    const dates = Utils.getRecentDays(30, 1);
     const rates = dates.map(date => {
       let totalProd = 0;
       let totalDefect = 0;
@@ -3142,12 +3199,17 @@ const Dashboard = {
   },
 
   updateProductChart(products, defectRecords, today) {
+    const productionRecords = DataStore.getProductionRecords();
     const labels = products.map(p => p.name);
-    const data = products.map(product => 
+    const data = products.map(product =>
       defectRecords
         .filter(r => r.date === today && r.productId === product.id)
         .reduce((sum, r) => sum + r.quantity, 0)
     );
+    const prodQtys = products.map(product => {
+      const prod = productionRecords.find(r => r.date === today && r.productId === product.id);
+      return prod ? prod.quantity : 0;
+    });
 
     this.charts.product.data.labels = labels;
     this.charts.product.data.datasets = [{
@@ -3155,6 +3217,7 @@ const Dashboard = {
       data: data,
       backgroundColor: '#ef4444'
     }];
+    this.charts.product._prodQtys = prodQtys;
     this.charts.product.update();
   },
 
@@ -3168,7 +3231,8 @@ const Dashboard = {
         .reduce((sum, r) => sum + r.quantity, 0);
       return {
         name: product.name,
-        rate: Utils.calcDefectRate(defects, prodQty)
+        rate: Utils.calcDefectRate(defects, prodQty),
+        prodQty: prodQty
       };
     }).sort((a, b) => b.rate - a.rate);
 
@@ -3180,6 +3244,7 @@ const Dashboard = {
         r.rate > 5 ? '#ef4444' : r.rate > 2 ? '#f59e0b' : '#10b981'
       )
     }];
+    this.charts.ranking._prodQtys = rankings.map(r => r.prodQty);
     this.charts.ranking.update();
   }
 };
@@ -3430,6 +3495,19 @@ const Production = {
 const Report = {
   currentData: [],
 
+  // 计算某产品在某日期范围内的最多不良描述
+  getTopDefectDesc(productId, defectRecords, dates) {
+    const descCount = {};
+    defectRecords
+      .filter(r => dates.includes(r.date) && r.productId === productId)
+      .forEach(r => {
+        descCount[r.defectDesc] = (descCount[r.defectDesc] || 0) + r.quantity;
+      });
+    const sorted = Object.entries(descCount).sort((a, b) => b[1] - a[1]);
+    if (sorted.length === 0) return null;
+    return { desc: sorted[0][0], count: sorted[0][1] };
+  },
+
   init() {
     this.loadProducts();
   },
@@ -3477,6 +3555,7 @@ const Report = {
           const defects = defectRecords
             .filter(r => r.date === date && r.productId === product.id)
             .reduce((sum, r) => sum + r.quantity, 0);
+          const topDefect = this.getTopDefectDesc(product.id, defectRecords, [date]);
           
           if (prodQty > 0 || defects > 0) {
             this.currentData.push({
@@ -3484,6 +3563,7 @@ const Report = {
               product: product.name,
               production: prodQty,
               defects: defects,
+              topDefect: topDefect,
               rate: Utils.calcDefectRate(defects, prodQty)
             });
           }
@@ -3507,6 +3587,7 @@ const Report = {
           const defects = defectRecords
             .filter(r => weekDates.includes(r.date) && r.productId === product.id)
             .reduce((sum, r) => sum + r.quantity, 0);
+          const topDefect = this.getTopDefectDesc(product.id, defectRecords, weekDates);
           
           if (prodQty > 0 || defects > 0) {
             this.currentData.push({
@@ -3514,6 +3595,7 @@ const Report = {
               product: product.name,
               production: prodQty,
               defects: defects,
+              topDefect: topDefect,
               rate: Utils.calcDefectRate(defects, prodQty)
             });
           }
@@ -3525,6 +3607,7 @@ const Report = {
       // 按月汇总
       const start = Utils.parseLocalDate(startDate);
       const end = Utils.parseLocalDate(endDate);
+      const monthDates = Utils.getDateRange(startDate, endDate);
       
       filteredProducts.forEach(product => {
         const prodQty = productionRecords
@@ -3539,6 +3622,7 @@ const Report = {
             return d >= start && d <= end && r.productId === product.id;
           })
           .reduce((sum, r) => sum + r.quantity, 0);
+        const topDefect = this.getTopDefectDesc(product.id, defectRecords, monthDates);
         
         if (prodQty > 0 || defects > 0) {
           this.currentData.push({
@@ -3546,6 +3630,7 @@ const Report = {
             product: product.name,
             production: prodQty,
             defects: defects,
+            topDefect: topDefect,
             rate: Utils.calcDefectRate(defects, prodQty)
           });
         }
@@ -3563,7 +3648,7 @@ const Report = {
     const tbody = document.getElementById('report-body');
     
     if (this.currentData.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray-500 py-8">暂无数据</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-500 py-8">暂无数据</td></tr>';
       return;
     }
 
@@ -3586,14 +3671,18 @@ const Report = {
       const groupRate = Utils.calcDefectRate(group.totalDefects, group.totalProduction);
       
       // 明细行
-      group.rows.forEach(row => {
+        group.rows.forEach(row => {
         const level = DefectLevels.getLevel(row.rate);
+        const topDefectText = row.topDefect
+          ? `<span class="text-red-600 font-semibold">${row.topDefect.desc}</span> <span class="text-gray-400 text-xs">(${row.topDefect.count}个)</span>`
+          : '<span class="text-gray-400">-</span>';
         html += `
           <tr class="border-b border-gray-100">
             <td class="text-gray-500 text-sm">${row.period}</td>
             <td>${row.product}</td>
             <td>${row.production}</td>
             <td class="font-semibold text-red-600">${row.defects}</td>
+            <td>${topDefectText}</td>
             <td class="font-semibold ${level.color}">${Utils.formatPercent(row.rate)}</td>
             <td><span class="px-2 py-0.5 rounded text-xs font-medium ${level.color} ${level.bg}">${level.level}</span></td>
           </tr>
@@ -3611,6 +3700,7 @@ const Report = {
           <td>全部产品</td>
           <td class="text-blue-700">${group.totalProduction}</td>
           <td class="text-red-600">${group.totalDefects}</td>
+          <td class="text-gray-400">-</td>
           <td class="${groupLevel.color}">${Utils.formatPercent(groupRate)}</td>
           <td><span class="px-2 py-0.5 rounded text-xs font-medium ${groupLevel.color} ${groupLevel.bg}">${groupLevel.level}</span></td>
         </tr>
@@ -3652,6 +3742,7 @@ const Report = {
           '产品': row.product,
           '产量': row.production,
           '报废数': row.defects,
+          '最多不良描述': row.topDefect ? `${row.topDefect.desc}(${row.topDefect.count}个)` : '-',
           '不良率': Utils.formatPercent(row.rate),
           '等级': level.level
         });
@@ -3664,6 +3755,7 @@ const Report = {
         '产品': '全部产品',
         '产量': group.totalProduction,
         '报废数': group.totalDefects,
+        '最多不良描述': '-',
         '不良率': Utils.formatPercent(groupRate),
         '等级': groupLevel.level
       });

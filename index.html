@@ -4349,6 +4349,13 @@ const GitHubSync = {
     return `https://raw.githubusercontent.com/${s.owner}/${s.repo}/${s.branch}/${s.path}`;
   },
 
+  // GitHub Pages 数据 URL（与页面同域，CDN 缓存刷新更快）
+  getPagesUrl() {
+    const s = this.settings;
+    if (!s.owner || !s.repo) return null;
+    return `https://${s.owner.toLowerCase()}.github.io/${s.repo}/${s.path}`;
+  },
+
   // 测试连接
   async testConnection() {
     if (!this.settings || !this.settings.owner) {
@@ -4435,6 +4442,12 @@ const GitHubSync = {
         const data = await resp.json();
         this.sha = data.content.sha;
         Utils.showToast('数据已成功上传到 GitHub');
+
+        // 自动清除 jsDelivr CDN 缓存，确保手机端立即看到最新数据
+        try {
+          fetch('https://purge.jsdelivr.net/gh/' + this.settings.owner + '/' + this.settings.repo + '@' + this.settings.branch + '/' + this.settings.path, { method: 'GET', mode: 'no-cors' });
+          console.log('[GitHubSync] jsDelivr 缓存清除请求已发送');
+        } catch (e) { /* 静默忽略 */ }
       } else {
         const err = await resp.json();
         Utils.showToast('上传失败：' + (err.message || resp.status), 'error');
@@ -4454,17 +4467,46 @@ const GitHubSync = {
       return;
     }
 
-    // 策略1：raw.githubusercontent.com（无 CDN 缓存，数据最实时）
-    // 策略2：jsDelivr CDN（备用，公开仓库无需 token）
-    // 策略3：GitHub API（需要 token，但能拿到 SHA 用于后续上传）
+    // 多数据源策略（按实时性排序）：
+    //   策略1: GitHub Pages（https://xxx.github.io/...）— 与页面同域，CDN刷新快
+    //   策略2: raw.githubusercontent.com — 无CDN，最实时但国内可能打不开
+    //   策略3: jsDelivr CDN — 快但有缓存，仅作最后备用
+    //   策略4: GitHub API — 需要token，能拿到SHA用于上传
+
+    // 缓存破坏：用当天日期+小时作为版本号，确保每小时强制刷新一次
+    const now = new Date();
+    const cacheBuster = now.getFullYear() + '-' +
+      String(now.getMonth() + 1).padStart(2, '0') + '-' +
+      String(now.getDate()).padStart(2, '0') + 'T' +
+      String(now.getHours()).padStart(2, '0');
+
+    const pagesUrl = this.getPagesUrl();
     const rawUrl = this.getRawUrl();
     const publicUrl = this.getPublicUrl();
 
     let data = null;
 
-    if (rawUrl) {
+    // 策略1：GitHub Pages（同域，CDN缓存刷新快，国内手机网络也能访问）
+    if (pagesUrl) {
       try {
-        const resp = await fetch(rawUrl + '?t=' + Date.now(), { cache: 'no-cache' });
+        const url = pagesUrl + '?v=' + cacheBuster;
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (resp.ok) {
+          data = await resp.json();
+          console.log('[GitHubSync] 通过 GitHub Pages 拉取数据成功');
+        } else {
+          console.warn('[GitHubSync] Pages 返回状态:', resp.status);
+        }
+      } catch (e) {
+        console.warn('[GitHubSync] Pages 拉取失败:', e.message);
+      }
+    }
+
+    // 策略2：raw.githubusercontent.com（无CDN，数据最实时）
+    if (!data && rawUrl) {
+      try {
+        const url = rawUrl + '?v=' + cacheBuster;
+        const resp = await fetch(url, { cache: 'no-store' });
         if (resp.ok) {
           data = await resp.json();
           console.log('[GitHubSync] 通过 raw.githubusercontent.com 拉取数据成功');
@@ -4474,9 +4516,11 @@ const GitHubSync = {
       }
     }
 
+    // 策略3：jsDelivr CDN（公开仓库无需token，仅作最后备用）
     if (!data && publicUrl) {
       try {
-        const resp = await fetch(publicUrl, { cache: 'no-cache' });
+        const url = publicUrl + '?v=' + cacheBuster;
+        const resp = await fetch(url, { cache: 'no-store' });
         if (resp.ok) {
           data = await resp.json();
           console.log('[GitHubSync] 通过 jsDelivr CDN 拉取数据成功');
@@ -4486,7 +4530,7 @@ const GitHubSync = {
       }
     }
 
-    // 如果公开方式失败，且配置了 token，再尝试 API（这样能拿到 sha）
+    // 策略4：GitHub API（需要token，能拿到sha用于后续上传）
     if (!data && this.settings.token) {
       try {
         const resp = await fetch(this.getApiUrl(), { headers: this.getHeaders() });
@@ -4507,7 +4551,7 @@ const GitHubSync = {
     }
 
     if (!data) {
-      console.log('[GitHubSync] 所有方式都未拉到数据');
+      console.log('[GitHubSync] 所有数据源都无法拉取数据');
       return;
     }
 

@@ -2755,149 +2755,343 @@ const Dashboard = {
     }).join('');
   },
 
-  // AI 不良分析与改进建议
+  // AI 不良分析与改进建议（完全数据驱动）
   renderAIAnalysis(products, productionRecords, defectRecords, weekDates, monthDates, targetDate) {
     const el = document.getElementById('dash-ai-analysis');
-    
-    // 收集本月所有缺陷数据
+
     const monthRecords = defectRecords.filter(r => monthDates.includes(r.date));
-    
-    if (monthRecords.length < 5) {
-      el.innerHTML = '<p class="text-gray-400 text-sm">本月不良记录较少（不足5条），无法生成有效分析报告。请录入更多数据后再查看。</p>';
+    const weekRecords = defectRecords.filter(r => weekDates.includes(r.date));
+
+    if (monthRecords.length < 3) {
+      el.innerHTML = '<p class="text-gray-400 text-sm">本月不良记录较少（不足3条），无法生成有效分析报告。请录入更多数据后再查看。</p>';
       return;
     }
 
     const productMap = {};
     products.forEach(p => productMap[p.id] = p.name);
 
-    // 统计不良类别
+    const totalDefects = monthRecords.reduce((s, r) => s + r.quantity, 0);
+    const weekDefects = weekRecords.reduce((s, r) => s + r.quantity, 0);
+
+    // 1. 按不良类别统计
     const typeStats = {};
     monthRecords.forEach(r => {
-      const type = r.defectType;
-      if (!typeStats[type]) typeStats[type] = 0;
-      typeStats[type] += r.quantity;
+      if (!typeStats[r.defectType]) typeStats[r.defectType] = { count: 0, descs: {} };
+      typeStats[r.defectType].count += r.quantity;
+      const d = r.defectDesc || '未描述';
+      if (!typeStats[r.defectType].descs[d]) typeStats[r.defectType].descs[d] = 0;
+      typeStats[r.defectType].descs[d] += r.quantity;
     });
+    const typeSorted = Object.entries(typeStats).sort((a, b) => b[1].count - a[1].count);
 
-    // 按产品统计不良数
-    const productDefectCount = {};
+    // 2. 按产品统计（含产量和不良率）
+    const productStats = {};
     monthRecords.forEach(r => {
       const name = productMap[r.productId] || '未知';
-      if (!productDefectCount[name]) productDefectCount[name] = 0;
-      productDefectCount[name] += r.quantity;
+      if (!productStats[name]) productStats[name] = { defects: 0, descs: {}, types: {} };
+      productStats[name].defects += r.quantity;
+      const d = r.defectDesc || '未描述';
+      if (!productStats[name].descs[d]) productStats[name].descs[d] = 0;
+      productStats[name].descs[d] += r.quantity;
+      const t = r.defectType || '未知';
+      if (!productStats[name].types[t]) productStats[name].types[t] = 0;
+      productStats[name].types[t] += r.quantity;
     });
+    const monthProdStats = {};
+    productionRecords.filter(r => monthDates.includes(r.date)).forEach(r => {
+      const name = productMap[r.productId] || '未知';
+      if (!monthProdStats[name]) monthProdStats[name] = 0;
+      monthProdStats[name] += r.quantity;
+    });
+    Object.keys(productStats).forEach(name => {
+      const prod = monthProdStats[name] || 0;
+      productStats[name].production = prod;
+      productStats[name].rate = prod > 0 ? (productStats[name].defects / prod * 100) : null;
+    });
+    const productSorted = Object.entries(productStats).sort((a, b) => b[1].defects - a[1].defects);
 
-    // 按描述统计
+    // 3. 按不良描述统计（跨产品）
     const descStats = {};
     monthRecords.forEach(r => {
-      const key = r.defectDesc;
-      if (!descStats[key]) descStats[key] = { count: 0, type: r.defectType, product: productMap[r.productId] };
+      const key = r.defectDesc || '未描述';
+      if (!descStats[key]) descStats[key] = { count: 0, type: r.defectType, products: {} };
       descStats[key].count += r.quantity;
+      const pname = productMap[r.productId] || '未知';
+      if (!descStats[key].products[pname]) descStats[key].products[pname] = 0;
+      descStats[key].products[pname] += r.quantity;
+    });
+    const descSorted = Object.entries(descStats).sort((a, b) => b[1].count - a[1].count);
+
+    // 4. 按日期统计趋势
+    const dateStats = {};
+    monthRecords.forEach(r => {
+      if (!dateStats[r.date]) dateStats[r.date] = 0;
+      dateStats[r.date] += r.quantity;
+    });
+    const dateSorted = Object.entries(dateStats).sort((a, b) => a[0].localeCompare(b[0]));
+    const dailyAvg = dateSorted.length > 0 ? totalDefects / dateSorted.length : 0;
+    const recentDates = dateSorted.slice(-3);
+    const recentAvg = recentDates.length > 0 ? recentDates.reduce((s, [, c]) => s + c, 0) / recentDates.length : 0;
+    const trendUp = recentAvg > dailyAvg * 1.2;
+    const trendDown = recentAvg < dailyAvg * 0.8;
+    const peakDay = dateSorted.length > 0 ? dateSorted.reduce((max, cur) => cur[1] > max[1] ? cur : max, ['', 0]) : ['', 0];
+
+    // --- 生成报告 ---
+    let html = '<div class="space-y-4 text-sm">';
+
+    // ========== 1. 总体概况 ==========
+    let trendText = '';
+    if (trendUp) {
+      trendText = '<span class="text-red-600 font-semibold">⚠️ 近3日不良数呈上升趋势</span>（日均' + dailyAvg.toFixed(0) + '件 → 近3日均' + recentAvg.toFixed(0) + '件），需重点关注';
+    } else if (trendDown) {
+      trendText = '<span class="text-green-600 font-semibold">\u2705 近3日不良数呈下降趋势</span>（日均' + dailyAvg.toFixed(0) + '件 → 近3日均' + recentAvg.toFixed(0) + '件），改善效果明显';
+    } else {
+      trendText = '近3日日均' + recentAvg.toFixed(0) + '件，与月日均' + dailyAvg.toFixed(0) + '件基本持平';
+    }
+
+    html += '<div class="bg-blue-50 rounded-lg p-4 border border-blue-100">' +
+      '<p class="font-semibold text-blue-800 mb-2">\ud83d\udcca 本月不良总体概况</p>' +
+      '<p class="text-blue-700">本月共记录 <b>' + totalDefects + '</b> 件不良品，涉及 <b>' + Object.keys(productStats).length + '</b> 款产品，分布在 <b>' + dateSorted.length + '</b> 天中（日均 ' + dailyAvg.toFixed(1) + ' 件）。</p>' +
+      '<p class="text-blue-700 mt-1">主要不良类型：<b>' + typeSorted.map(function(tp) { return tp[0] + ' ' + tp[1].count + '件(' + (tp[1].count/totalDefects*100).toFixed(1) + '%)'; }).join('、') + '</b></p>' +
+      '<p class="text-blue-700 mt-1">' + trendText + '</p>' +
+      '</div>';
+
+    // ========== 2. 重点关注问题 ==========
+    html += '<div class="bg-red-50 rounded-lg p-4 border border-red-200"><p class="font-semibold text-red-800 mb-2">\ud83d\udd34 当前需重点关注的问题</p><div class="space-y-3">';
+
+    var focusIdx = 0;
+
+    // 2-1 最高频不良描述
+    if (descSorted.length > 0) {
+      focusIdx++;
+      var topDesc = descSorted[0];
+      var pct = (topDesc[1].count / totalDefects * 100).toFixed(1);
+      var productBreakdown = Object.entries(topDesc[1].products).sort(function(a, b) { return b[1] - a[1]; })
+        .map(function(p) { return p[0] + '(' + p[1] + '件)'; }).join('、');
+      html += '<div class="bg-white rounded p-3 border border-red-100">' +
+        '<p class="text-red-700"><b>' + focusIdx + '. 最高频不良：「' + topDesc[0] + '」</b> — ' + topDesc[1].count + '件，占总量' + pct + '%</p>' +
+        '<p class="text-gray-600 mt-1 text-xs">类别：' + topDesc[1].type + ' | 涉及产品：' + productBreakdown + '</p>' +
+        '<p class="text-red-600 mt-1 text-xs">→ 建议：将该问题列为本月质量改善专项，组织生产、工艺、品质三方分析根因，制定纠正措施并跟踪验证</p>' +
+        '</div>';
+    }
+
+    // 2-2 不良最多的产品
+    if (productSorted.length > 0) {
+      focusIdx++;
+      var topProd = productSorted[0];
+      var rateText = topProd[1].rate !== null ? '，不良率' + topProd[1].rate.toFixed(2) + '%' : '';
+      var topDescsForProduct = Object.entries(topProd[1].descs).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 3)
+        .map(function(d) { return d[0] + '(' + d[1] + '件)'; }).join('、');
+      html += '<div class="bg-white rounded p-3 border border-red-100">' +
+        '<p class="text-red-700"><b>' + focusIdx + '. 不良最多产品：「' + topProd[0] + '」</b> — ' + topProd[1].defects + '件' + rateText + '</p>' +
+        '<p class="text-gray-600 mt-1 text-xs">主要问题：' + topDescsForProduct + '</p>' +
+        '<p class="text-red-600 mt-1 text-xs">→ 建议：排查该产品工装夹具状态、刀具寿命、工艺参数是否合理，必要时安排工艺工程师专项跟进</p>' +
+        '</div>';
+    }
+
+    // 2-3 不良率最高产品
+    var rateSorted = productSorted.filter(function(p) { return p[1].rate !== null && p[1].production > 10; }).sort(function(a, b) { return b[1].rate - a[1].rate; });
+    if (rateSorted.length > 0) {
+      var topRate = rateSorted[0];
+      if (topRate[0] !== (productSorted[0] && productSorted[0][0])) {
+        focusIdx++;
+        html += '<div class="bg-white rounded p-3 border border-red-100">' +
+          '<p class="text-red-700"><b>' + focusIdx + '. 不良率最高产品：「' + topRate[0] + '」</b> — 不良率' + topRate[1].rate.toFixed(2) + '%（' + topRate[1].defects + '件/' + topRate[1].production + '件）</p>' +
+          '<p class="text-red-600 mt-1 text-xs">→ 该产品不良率异常偏高，优先排查装夹方式、刀具状态和加工参数，可能存在系统性工艺问题</p>' +
+          '</div>';
+      } else if (topRate[1].rate > 3) {
+        focusIdx++;
+        html += '<div class="bg-white rounded p-3 border border-orange-100">' +
+          '<p class="text-orange-700"><b>' + focusIdx + '. 不良率关注：「' + topRate[0] + '」</b> — 不良率' + topRate[1].rate.toFixed(2) + '%</p>' +
+          '<p class="text-orange-600 mt-1 text-xs">→ 该产品不良率较高，建议持续监控趋势变化</p>' +
+          '</div>';
+      }
+    }
+
+    // 2-4 单日异常峰值
+    if (peakDay[1] > dailyAvg * 2 && peakDay[1] >= 5) {
+      focusIdx++;
+      var peakDateFormatted = peakDay[0].substring(5).replace('-', '/');
+      html += '<div class="bg-white rounded p-3 border border-red-100">' +
+        '<p class="text-red-700"><b>' + focusIdx + '. 单日异常峰值：' + peakDateFormatted + '</b> — 当日不良' + peakDay[1] + '件，是日均' + dailyAvg.toFixed(0) + '件的' + (peakDay[1]/dailyAvg).toFixed(1) + '倍</p>' +
+        '<p class="text-red-600 mt-1 text-xs">→ 建议：排查当日是否有换刀、换型、人员变动或设备异常，确认是否为批量性质量问题</p>' +
+        '</div>';
+    }
+
+    // 2-5 某不良描述仅出现在单一产品（产品专属问题）
+    descSorted.forEach(function(entry) {
+      var descName = entry[0];
+      var descData = entry[1];
+      var productEntries = Object.entries(descData.products).sort(function(a, b) { return b[1] - a[1]; });
+      if (productEntries.length === 1 && descData.count >= 5) {
+        focusIdx++;
+        var soleProduct = productEntries[0][0];
+        html += '<div class="bg-white rounded p-3 border border-orange-100">' +
+          '<p class="text-orange-700"><b>' + focusIdx + '. 「' + descName + '」仅出现在「' + soleProduct + '」</b> — ' + descData.count + '件</p>' +
+          '<p class="text-orange-600 mt-1 text-xs">→ 该问题为产品专属问题，建议针对' + soleProduct + '的工装/工艺/刀具进行专项排查</p>' +
+          '</div>';
+      }
     });
 
-    const totalDefects = monthRecords.reduce((sum, r) => sum + r.quantity, 0);
-    const typeSorted = Object.entries(typeStats).sort((a, b) => b[1] - a[1]);
-    const descSorted = Object.entries(descStats).sort((a, b) => b[1] - a[1]);
-    const productSorted = Object.entries(productDefectCount).sort((a, b) => b[1] - a[1]);
+    html += '</div></div>';
 
-    // 根据不良类别生成分析
-    let analysisHtml = '<div class="space-y-4 text-sm">';
-    
-    // 1. 总体概况
-    analysisHtml += `<div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
-      <p class="font-semibold text-blue-800 mb-2">📊 本月不良总体概况</p>
-      <p class="text-blue-700">本月共记录 <b>${totalDefects}</b> 件不良品，涉及 <b>${Object.keys(productDefectCount).length}</b> 款产品。</p>
-      <p class="text-blue-700 mt-1">不良类型分布：${typeSorted.map(([t, c]) => `<b>${t}</b> ${c}件(${(c/totalDefects*100).toFixed(1)}%)`).join('、')}</p>
-    </div>`;
+    // ========== 3. 各类不良原因分析 ==========
+    var industryKnowledge = {
+      '尺寸超差': {
+        causes: [
+          { keyword: '位置度', desc: '夹具定位精度不足或定位面磨损，需校验夹具精度' },
+          { keyword: '壁厚', desc: '装夹变形或刀具让刀导致壁厚不均，建议优化夹紧力策略' },
+          { keyword: '孔', desc: '钻头/铰刀磨损或排屑不良导致孔径超差，建议检查刀具状态和冷却液流量' },
+          { keyword: '型线', desc: '成型刀具磨损或程序刀补偏差，建议校验刀补值和刀具轮廓' },
+          { keyword: '槽宽', desc: '切槽刀磨损或排屑不畅，建议检查刀具状态和断屑效果' },
+          { keyword: '变形', desc: '装夹力过大导致薄壁件弹性变形，卸下后回弹造成偏差' },
+        ],
+        general: '刀具磨损/崩刃、装夹变形、机床精度衰减、热变形等因素导致尺寸漂移',
+      },
+      '人为操作': {
+        causes: [
+          { keyword: '装夹', desc: '装夹操作不规范，工件未完全贴合定位面或压紧力不均匀' },
+          { keyword: '调机', desc: '换型调机缺乏标准化作业指导，首件检验不充分' },
+          { keyword: '碰伤', desc: '上下料操作不当导致工件磕碰' },
+          { keyword: '划伤', desc: '流转或存放过程中防护不到位' },
+        ],
+        general: '操作SOP执行不到位、换型标准化不足、人员培训缺失等',
+      },
+      '外观不良': {
+        causes: [
+          { keyword: '磕碰', desc: '工件流转过程中堆放不合理、周转箱无隔板防护' },
+          { keyword: '来料', desc: '毛坯本身存在砂眼、裂纹等缺陷，上游工序质量失控' },
+          { keyword: '氧化', desc: '切削液浓度或PH值不当、工序间存放时间过长未做防锈' },
+          { keyword: '锈', desc: '防锈处理缺失或切削液防锈性能下降' },
+          { keyword: '划伤', desc: '上下料机械手或流转过程中表面被硬物刮擦' },
+        ],
+        general: '工件防护不足、来料质量控制、切削液管理等',
+      },
+      '设备原因': {
+        causes: [
+          { keyword: '气密', desc: '气密夹具密封圈磨损、气路漏气导致误判' },
+          { keyword: '打滑', desc: '液压/气动夹具压力不足、卡爪磨损、工件表面有油污' },
+          { keyword: '故障', desc: '机床主轴、丝杠、冷却系统等部件异常' },
+        ],
+        general: '设备维护保养不足、夹具精度衰减等',
+      },
+    };
 
-    // 2. 不良品主要原因分析（基于机加工行业经验）
-    analysisHtml += '<div class="bg-orange-50 rounded-lg p-4 border border-orange-100"><p class="font-semibold text-orange-800 mb-2">🔍 不良品主要原因分析</p><ul class="list-disc list-inside space-y-2 text-orange-700">';
+    html += '<div class="bg-orange-50 rounded-lg p-4 border border-orange-100"><p class="font-semibold text-orange-800 mb-2">\ud83d\udd0d 各类不良原因分析</p><div class="space-y-3">';
 
-    if (typeStats['尺寸超差']) {
-      const pct = ((typeStats['尺寸超差'] / totalDefects) * 100).toFixed(1);
-      analysisHtml += `<li><b>尺寸超差（${pct}%）— CNC加工核心问题：</b>
-        <br>• <b>刀具磨损/崩刃</b>：加工过程中刀具逐渐磨损导致尺寸漂移，未及时更换或未做刀具寿命管理
-        <br>• <b>装夹变形</b>：薄壁件/异形件装夹力不当导致工件弹性变形，卸下后回弹造成尺寸偏差
-        <br>• <b>机床精度衰减</b>：长期运行导致丝杠间隙增大、主轴跳动超差，需定期校准
-        <br>• <b>热变形</b>：切削热导致工件和机床热膨胀，冷态测量与加工状态尺寸不一致
-        <br>• <b>工艺参数不合理</b>：切削速度、进给量、切深不匹配，引起振刀或让刀
-      </li>`;
-    }
+    typeSorted.forEach(function(typeEntry) {
+      var typeName = typeEntry[0];
+      var typeData = typeEntry[1];
+      var pct = (typeData.count / totalDefects * 100).toFixed(1);
+      var knowledge = industryKnowledge[typeName] || { causes: [], general: '建议根据具体不良描述分析根因' };
 
-    if (typeStats['人为操作']) {
-      const pct = ((typeStats['人为操作'] / totalDefects) * 100).toFixed(1);
-      let suggestions = '<br>• <b>装夹操作不规范</b>：工件未完全贴合定位面、压紧力不均匀或压紧顺序错误';
-      // 根据具体描述补充
-      if (descStats['装夹不良']) suggestions += '<br>• <b>装夹不良（高频）</b>：夹具清洁不到位、定位面有切屑残留、夹紧力过大导致变形';
-      if (descStats['调机件']) suggestions += '<br>• <b>调机件较多</b>：换型调机过程缺乏标准化作业指导，首件检验不充分';
-      suggestions += '<br>• <b>操作失误</b>：程序调用错误、刀具装错、补偿值输入错误等人为疏忽';
-      analysisHtml += `<li><b>人为操作（${pct}%）：</b>${suggestions}</li>`;
-    }
+      var descList = Object.entries(typeData.descs).sort(function(a, b) { return b[1] - a[1]; });
+      var detailHtml = '';
 
-    if (typeStats['外观不良']) {
-      const pct = ((typeStats['外观不良'] / totalDefects) * 100).toFixed(1);
-      let suggestions = '<br>• <b>磕碰/碰伤</b>：工件流转过程中堆放不合理、周转箱无隔板防护、上下料机械手碰撞';
-      if (descStats['来料不良']) suggestions += '<br>• <b>来料不良</b>：毛坯本身存在砂眼、裂纹、氧化皮等缺陷，上游铸造/锻造工序质量失控';
-      if (descStats['氧化']) suggestions += '<br>• <b>氧化/锈蚀</b>：切削液浓度或PH值不当、工序间存放时间过长未做防锈处理';
-      suggestions += '<br>• <b>表面粗糙度不达标</b>：切削参数不当导致振纹、刀具钝化、切削液润滑不足';
-      analysisHtml += `<li><b>外观不良（${pct}%）：</b>${suggestions}</li>`;
-    }
+      descList.forEach(function(descEntry) {
+        var descName = descEntry[0];
+        var descCount = descEntry[1];
+        var matchedCause = null;
+        for (var i = 0; i < knowledge.causes.length; i++) {
+          if (descName.indexOf(knowledge.causes[i].keyword) !== -1) {
+            matchedCause = knowledge.causes[i];
+            break;
+          }
+        }
+        var descProducts = descStats[descName] ? Object.entries(descStats[descName].products).sort(function(a, b) { return b[1] - a[1]; }) : [];
+        var productText = descProducts.map(function(p) { return p[0] + '(' + p[1] + '件)'; }).join('、');
 
-    if (typeStats['设备原因']) {
-      const pct = ((typeStats['设备原因'] / totalDefects) * 100).toFixed(1);
-      let suggestions = '<br>• <b>气密检测误报</b>：气密夹具密封圈磨损、气路漏气导致误判';
-      if (descStats['打滑']) suggestions += '<br>• <b>夹紧打滑</b>：液压/气动夹具压力不足、卡爪磨损、工件表面有油污';
-      suggestions += '<br>• <b>机床故障</b>：主轴轴承损坏、丝杠反向间隙过大、冷却系统堵塞';
-      analysisHtml += `<li><b>设备原因（${pct}%）：</b>${suggestions}</li>`;
-    }
+        detailHtml += '<div class="ml-4 mt-1 text-xs">' +
+          '<span class="text-gray-700">• <b>' + descName + '</b>（' + descCount + '件）— ' + (matchedCause ? matchedCause.desc : knowledge.general) + '</span>' +
+          '<span class="text-gray-500"> | 涉及：' + productText + '</span>' +
+          '</div>';
+      });
 
-    analysisHtml += '</ul></div>';
+      html += '<div class="bg-white rounded p-3 border border-orange-100">' +
+        '<p class="text-orange-700 font-medium">' + typeName + '（' + typeData.count + '件，' + pct + '%）</p>' +
+        detailHtml +
+        '</div>';
+    });
 
-    // 3. 改进建议
-    analysisHtml += '<div class="bg-green-50 rounded-lg p-4 border border-green-100"><p class="font-semibold text-green-800 mb-2">✅ 针对性改进建议</p><ul class="list-disc list-inside space-y-2 text-green-700">';
+    html += '</div></div>';
 
-    // 按最高频率的不良类型给建议
-    const topType = typeSorted[0] && typeSorted[0][0];
-    if (topType === '尺寸超差') {
-      analysisHtml += `<li><b>推行刀具寿命管理制度</b>：建立刀具寿命台账，按加工件数/时间强制更换，避免过度磨损导致批量超差</li>`;
-      analysisHtml += `<li><b>增加在线测量/首件全检</b>：每批次首件进行三坐标全尺寸检测，量产中每N件抽检关键尺寸并录入SPC控制图</li>`;
-    }
-    if (topType === '人为操作' || typeStats['人为操作'] > totalDefects * 0.2) {
-      analysisHtml += `<li><b>制作标准化换型SOP</b>：将调机步骤、装夹方法、检测要点制作成图文作业指导书，张贴在机台旁</li>`;
-      analysisHtml += `<li><b>推行防错法(Poka-Yoke)</b>：在夹具上增加防错销/传感器，确保工件装夹方向正确、到位检测</li>`;
-    }
-    if (typeStats['外观不良'] > totalDefects * 0.15) {
-      analysisHtml += `<li><b>优化工件流转防护</b>：使用专用周转托盘+隔板，关键表面贴保护膜，规定工件摆放朝向</li>`;
-    }
-    analysisHtml += `<li><b>建立不良品追溯机制</b>：每件产品打码或标记批次号，不良发生时能追溯到具体机床、刀具、操作员、班次</li>`;
-    analysisHtml += `<li><b>定期设备精度校验</b>：每月检查主轴跳动、丝杠反向间隙，建立设备精度档案，趋势恶化前预警维修</li>`;
-    analysisHtml += `<li><b>切削液定期检测</b>：每周检测切削液浓度和PH值，确保在工艺要求范围内（浓度3-8%，PH 8.5-9.5）</li>`;
+    // ========== 4. 针对性改进建议 ==========
+    var suggestions = [];
 
-    // 针对高频不良描述的具体建议
     if (descSorted.length > 0) {
-      const topDesc = descSorted[0];
-      analysisHtml += `<li><b>重点关注「${topDesc[0]}」</b>（${topDesc[1].count}件，${(topDesc[1].count/totalDefects*100).toFixed(1)}%）：将该问题列为本周质量改善专项，组织生产、工艺、品质三方会议分析根因</li>`;
+      var td = descSorted[0];
+      suggestions.push({ priority: 1, title: '「' + td[0] + '」专项改善',
+        detail: '该问题本月发生' + td[1].count + '件（占比' + (td[1].count/totalDefects*100).toFixed(1) + '%），是当前最突出的不良问题。建议：①组织专题会议分析根因；②制定纠正措施并设定完成时限；③连续跟踪2周验证改善效果' });
     }
 
-    // 针对问题最多的产品
     if (productSorted.length > 0) {
-      const topProduct = productSorted[0];
-      analysisHtml += `<li><b>产品「${topProduct[0]}」不良最多</b>（${topProduct[1]}件）：建议分析该产品工艺难点，必要时优化工装夹具或工艺路线</li>`;
+      var tp = productSorted[0];
+      var ptd = Object.entries(tp[1].descs).sort(function(a, b) { return b[1] - a[1]; })[0];
+      suggestions.push({ priority: 2, title: '产品「' + tp[0] + '」工艺优化',
+        detail: '该产品不良数' + tp[1].defects + '件' + (tp[1].rate !== null ? '（不良率' + tp[1].rate.toFixed(2) + '%）' : '') + '，主要问题为' + (ptd ? '「' + ptd[0] + '」(' + ptd[1] + '件)' : '多种不良') + '。建议：①排查工装夹具状态；②检查刀具寿命和磨损情况；③评估工艺参数是否需要优化' });
     }
 
-    analysisHtml += '</ul></div>';
-
-    // 4. 数据质量提示
-    const currentDate = new Date();
-    const monthNum = parseInt(targetDate.substring(5, 7));
-    const currentMonth = currentDate.getMonth() + 1;
-    if (monthNum !== currentMonth) {
-      analysisHtml += `<div class="bg-yellow-50 rounded-lg p-3 border border-yellow-100 mt-3">
-        <p class="text-yellow-700 text-xs">⚠️ 当前展示的是 <b>${monthNum}月</b> 的历史数据，可能与当前月份不同。分析基于所选月份的不良记录。</p>
-      </div>`;
+    if (rateSorted.length > 0 && rateSorted[0][1].rate > 5) {
+      suggestions.push({ priority: 3, title: '「' + rateSorted[0][0] + '」不良率预警',
+        detail: '该产品不良率' + rateSorted[0][1].rate.toFixed(2) + '%偏高（' + rateSorted[0][1].defects + '件/' + rateSorted[0][1].production + '件），可能存在系统性工艺问题。建议：①暂停大批量生产，先做小批量验证；②安排工艺工程师现场跟机排查' });
     }
 
-    analysisHtml += '</div>';
-    el.innerHTML = analysisHtml;
+    if (trendUp) {
+      suggestions.push({ priority: 4, title: '不良上升趋势干预',
+        detail: '近3日日均不良' + recentAvg.toFixed(0) + '件高于月均' + dailyAvg.toFixed(0) + '件，呈恶化趋势。建议：①立即排查近期是否有换刀、换型、人员变动；②检查设备状态和切削液浓度；③加强首件检验和巡检频次' });
+    }
+
+    if (peakDay[1] > dailyAvg * 2 && peakDay[1] >= 5) {
+      var pkDate = peakDay[0].substring(5).replace('-', '/');
+      suggestions.push({ priority: 5, title: pkDate + '异常峰值调查',
+        detail: '当日不良' + peakDay[1] + '件是日均的' + (peakDay[1]/dailyAvg).toFixed(1) + '倍，属异常波动。建议：①调取当日生产记录，确认是否有批量性质量问题；②追溯当日操作的机床、人员、刀具批次' });
+    }
+
+    if (typeStats['尺寸超差'] && typeStats['尺寸超差'].count > totalDefects * 0.4) {
+      suggestions.push({ priority: 6, title: '尺寸超差系统性管控',
+        detail: '尺寸超差占比' + (typeStats['尺寸超差'].count/totalDefects*100).toFixed(1) + '%过高。建议：①建立刀具寿命管理台账，按加工件数强制更换；②关键尺寸引入SPC控制图，设置预警限；③每月校验机床精度（主轴跳动、丝杠间隙）' });
+    }
+
+    if (typeStats['人为操作'] && typeStats['人为操作'].count > totalDefects * 0.2) {
+      suggestions.push({ priority: 7, title: '人为操作标准化',
+        detail: '人为操作不良占比' + (typeStats['人为操作'].count/totalDefects*100).toFixed(1) + '%。建议：①制作图文SOP张贴机台旁；②推行防错法(Poka-Yoke)，夹具增加防错销/到位传感器；③加强新员工岗前培训和考核' });
+    }
+
+    if (typeStats['外观不良'] && typeStats['外观不良'].count > totalDefects * 0.15) {
+      suggestions.push({ priority: 8, title: '外观防护改善',
+        detail: '外观不良' + typeStats['外观不良'].count + '件。建议：①使用专用周转托盘+隔板；②关键表面贴保护膜；③规定工件摆放朝向和堆叠层数；④每周检测切削液浓度(3-8%)和PH值(8.5-9.5)' });
+    }
+
+    if (suggestions.length < 3) {
+      suggestions.push({ priority: 9, title: '建立不良追溯机制',
+        detail: '每件产品标记批次号，不良发生时能追溯到具体机床、刀具、操作员、班次，便于根因分析' });
+      suggestions.push({ priority: 10, title: '定期设备精度校验',
+        detail: '每月检查主轴跳动、丝杠反向间隙，建立设备精度档案，趋势恶化前预警维修' });
+    }
+
+    suggestions.sort(function(a, b) { return a.priority - b.priority; });
+
+    html += '<div class="bg-green-50 rounded-lg p-4 border border-green-100"><p class="font-semibold text-green-800 mb-2">\u2705 针对性改进建议</p><div class="space-y-3">';
+    suggestions.forEach(function(s, i) {
+      var bg = i < 2 ? 'bg-white border-red-100' : 'bg-white border-green-100';
+      html += '<div class="' + bg + ' rounded p-3 border">' +
+        '<p class="text-green-700 font-medium">建议' + (i + 1) + '：' + s.title + '</p>' +
+        '<p class="text-gray-600 mt-1 text-xs">' + s.detail + '</p>' +
+        '</div>';
+    });
+    html += '</div></div>';
+
+    // ========== 5. 数据说明 ==========
+    var currentDate = new Date();
+    var monthNum = parseInt(targetDate.substring(5, 7));
+    var currentMonth = currentDate.getMonth() + 1;
+    var dateRangeText = monthDates[0] + ' ~ ' + monthDates[monthDates.length - 1];
+    html += '<div class="bg-gray-50 rounded-lg p-3 border border-gray-100">' +
+      '<p class="text-gray-500 text-xs">📌 分析数据范围：' + dateRangeText + ' | 本月不良记录 ' + monthRecords.length + ' 条，共 ' + totalDefects + ' 件 | 本周不良 ' + weekDefects + ' 件' + (monthNum !== currentMonth ? ' | ⚠️ 当前为历史月份数据' : '') + '</p>' +
+      '</div>';
+
+    html += '</div>';
+    el.innerHTML = html;
   },
 
   updateTrendChart(products, productionRecords, defectRecords) {

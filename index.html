@@ -4522,45 +4522,65 @@ const GitHubSync = {
     Utils.showToast('正在上传数据到 GitHub...');
 
     try {
-      // 先获取远程文件的 SHA（如果存在）
-      let sha = this.sha;
-      try {
-        const resp = await fetch(this.getApiUrl(), { headers: this.getHeaders() });
-        if (resp.ok) {
-          const data = await resp.json();
-          sha = data.sha;
-          this.sha = sha;
-        } else if (resp.status === 404) {
-          sha = null;
-        }
-      } catch (e) {
-        // 忽略，可能文件不存在
-      }
-
       // 准备数据
       const exportData = DataStore.exportAll();
       exportData.syncTime = new Date().toISOString();
       exportData.syncBy = Auth.currentUser ? Auth.currentUser.name : 'unknown';
       const content = btoa(unescape(encodeURIComponent(JSON.stringify(exportData, null, 2))));
 
-      const body = {
-        message: `数据同步 - ${Utils.getToday()} ${new Date().toLocaleTimeString('zh-CN')}`,
-        content: content,
-        branch: this.settings.branch
+      const doPush = async (isRetry = false) => {
+        // 获取远程文件的最新 SHA，带缓存破坏参数，防止浏览器缓存返回过期的 SHA
+        let sha = null;
+        try {
+          const apiUrl = this.getApiUrl() + '&_cb=' + Date.now();
+          const resp = await fetch(apiUrl, { headers: this.getHeaders(), cache: 'no-cache' });
+          if (resp.ok) {
+            const data = await resp.json();
+            sha = data.sha;
+            this.sha = sha;
+          } else if (resp.status === 404) {
+            sha = null;
+            this.sha = null;
+          } else if (!isRetry && (resp.status === 401 || resp.status === 403)) {
+            Utils.showToast('Token 无效或权限不足', 'error');
+            return false;
+          }
+        } catch (e) {
+          console.warn('[GitHubSync] 获取最新 SHA 失败:', e);
+        }
+
+        const body = {
+          message: `数据同步 - ${Utils.getToday()} ${new Date().toLocaleTimeString('zh-CN')}`,
+          content: content,
+          branch: this.settings.branch
+        };
+        if (sha) {
+          body.sha = sha;
+        }
+
+        const resp = await fetch(this.getApiUrl(), {
+          method: 'PUT',
+          headers: this.getHeaders(),
+          body: JSON.stringify(body)
+        });
+
+        if (resp.ok) {
+          const data = await resp.json();
+          this.sha = data.content.sha;
+          return true;
+        }
+
+        const err = await resp.json();
+        // 如果是 SHA 不匹配，且是第一次，自动重试一次（可能远程刚好被其他设备更新）
+        if (err.message && err.message.includes('does not match') && !isRetry) {
+          Utils.showToast('远程数据有更新，正在重新同步后重试...');
+          return doPush(true);
+        }
+        throw new Error(err.message || resp.status);
       };
-      if (sha) {
-        body.sha = sha;
-      }
 
-      const resp = await fetch(this.getApiUrl(), {
-        method: 'PUT',
-        headers: this.getHeaders(),
-        body: JSON.stringify(body)
-      });
-
-      if (resp.ok) {
-        const data = await resp.json();
-        this.sha = data.content.sha;
+      const ok = await doPush();
+      if (ok) {
         Utils.showToast('数据已成功上传到 GitHub');
 
         // 自动清除 jsDelivr CDN 缓存，确保手机端立即看到最新数据
@@ -4568,12 +4588,9 @@ const GitHubSync = {
           fetch('https://purge.jsdelivr.net/gh/' + this.settings.owner + '/' + this.settings.repo + '@' + this.settings.branch + '/' + this.settings.path, { method: 'GET', mode: 'no-cors' });
           console.log('[GitHubSync] jsDelivr 缓存清除请求已发送');
         } catch (e) { /* 静默忽略 */ }
-      } else {
-        const err = await resp.json();
-        Utils.showToast('上传失败：' + (err.message || resp.status), 'error');
       }
     } catch (err) {
-      Utils.showToast('上传出错：' + err.message, 'error');
+      Utils.showToast('上传失败：' + err.message, 'error');
     }
   },
 
